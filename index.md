@@ -1,8 +1,8 @@
 ---
 layout: home
 title: Home
-landing-title: 'Hi, my name is Forty'
-description: null
+landing-title: 'Roaring 20s Chicago'
+description: Test
 image: null
 author: null
 show_tile: false

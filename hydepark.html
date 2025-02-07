@@ -1,0 +1,79 @@
+---
+title: Hyde Park Map
+layout: maps
+description: 'Lorem ipsum dolor sit amet nullam consequa<br />sed veroeros. tempus adipiscing nulla.'
+image: assets/images/southside.jpg
+nav-menu: true
+---
+
+<!DOCTYPE html>
+<html>
+
+<head>
+        <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <!--[if lte IE 8]><script src="{{ "assets/js/ie/html5shiv.js" | relative_url }}"></script><![endif]-->
+        <link rel="stylesheet" href="{{ "assets/css/main.css" | relative_url }}" />
+        <!--[if lte IE 9]><link rel="stylesheet" href="{{ "assets/css/ie9.css" | relative_url }}" /><![endif]-->
+        <!--[if lte IE 8]><link rel="stylesheet" href="{{ "assets/css/ie8.css" | relative_url }}" /><![endif]-->
+    <title>Leaflet Map with Sidebar</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body, #main, #one {
+            margin: 0;
+            width: 100%;
+        }
+
+        #one {
+            display: flex;
+        }
+ 
+        #map {
+            width: 75%;
+            height: 100vh;
+        }
+        #map label{
+            color: black;
+            text-decoration: none;
+            text-transform: none;
+            margin: auto;
+        }
+        
+
+        #sidebar {
+            width: 25%;
+            height: 100vh;
+            padding: 1rem;
+            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .legend-item-container {
+
+            color: black;
+
+        }
+
+        input[type="checkbox"], input[type="radio"] {
+        -webkit-appearance: auto;
+        appearance: auto;
+        display: block;
+        float: left;
+        margin-right: 10px;
+        opacity: 1;
+}
+
+    </style>
+</head>
+<body>
+    <script type="text/javascript">document.body.classList.add("is-loading");</script>
+
+    {% include header.html %} {{ content }} {% include footer.html %}
+
+</body>
+
+</html>
+
+
