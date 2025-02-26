@@ -17,7 +17,7 @@
 		@include vendor('display', 'flex');
 		@include vendor('justify-content', 'center');
 		@include vendor('pointer-events', 'none');
-		background: color.adjust(_palette(bg), $alpha: -0.1);
+		background: _palette(bg-alt3);
 		box-shadow: none;
 		height: 100%;
 		left: 0;
@@ -142,7 +142,7 @@
 
 	body.is-ie {
 		#menu {
-			background: color.adjust(_palette(bg-alt), $alpha: -0.025);
+			background: _palette(bg-alt3);
 		}
 	}
 

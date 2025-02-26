@@ -43,7 +43,7 @@
 
 			&:active {
 				&:before {
-					background-color: color.adjust(color.adjust(_palette(accent1), $lightness: -15%), $saturation: -5%);
+					background-color: _palette(accent1-active);
 				}
 			}
 		}

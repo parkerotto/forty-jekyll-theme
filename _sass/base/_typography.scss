@@ -42,7 +42,7 @@
 		}
 
 		&:active {
-			color: color.adjust(color.adjust(_palette(highlight), $lightness: -15%), $saturation: -5%) !important;
+			color: _palette(highlight-after) !important;
 		}
 	}
 

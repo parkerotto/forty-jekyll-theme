@@ -17,7 +17,7 @@
 		> section {
 			@include vendor('display', 'flex');
 			@include vendor('flex-direction', 'row');
-			background-color: color.adjust(color.adjust(_palette(bg-alt), $lightness: 2%), $saturation: -1%);
+			background-color: _palette(bg-alt2);
 
 			> .image {
 				background-position: center center;
@@ -34,7 +34,7 @@
 				}
 
 				&:before {
-					background: color.adjust(_palette(bg), $alpha: -0.1);
+					background: _palette(bg-alt3);
 					content: '';
 					display: block;
 					height: 100%;
@@ -63,7 +63,7 @@
 
 			&:nth-child(2n) {
 				@include vendor('flex-direction', 'row-reverse');
-				background-color: color.adjust(color.adjust(_palette(bg-alt), $lightness: 4%), $saturation: -2%);
+				background-color: _palette(bg-alt2);
 
 				> .content {
 					@include vendor('align-items', 'flex-end');
