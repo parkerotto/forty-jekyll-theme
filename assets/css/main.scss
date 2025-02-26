@@ -1,6 +1,6 @@
 ---
 ---
-@import 'libs/vars';
+@use 'libs/vars' as vars;
 @import 'libs/functions';
 @import 'libs/mixins';
 @import 'libs/skel';
@@ -58,7 +58,6 @@
 // Component.
 
 	@import 'components/section';
-	@import 'components/form';
 	@import 'components/box';
 	@import 'components/icon';
 	@import 'components/image';
@@ -66,15 +65,14 @@
 	@import 'components/table';
 	@import 'components/button';
 	@import 'components/tiles';
-	@import 'components/contact-method';
 	@import 'components/spotlights';
+	@import 'components/mappages';
 
 // Layout.
 
 	@import 'layout/header';
 	@import 'layout/banner';
 	@import 'layout/main';
-	@import 'layout/contact';
 	@import 'layout/footer';
 	@import 'layout/wrapper';
 	@import 'layout/menu';

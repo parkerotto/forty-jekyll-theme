@@ -2,10 +2,10 @@
 layout: home
 title: Home
 landing-title: 'Roaring 20s Chicago'
-description: Test
+description: Enter a description here
 image: null
 author: null
 show_tile: false
 ---
 
-Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus pharetra. Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus.
+The Roaring 20s Project was conceptualized by Parker Otto. Ongoing work on the project is provided by Chicago Studies at the University of Chicago with design assistance from the Center for Digital Scholarship. Chicago Studies gives students the opportunities they need to meaningfully engage with the communities they inhabit here in Chicago.

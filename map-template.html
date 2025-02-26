@@ -1,13 +1,16 @@
+<!-- Uncomment this in order to make it visible, if you do not uncomment, the page will look strange. 
+ Please do not edit this template directly. Instead, copy the template and change the name.
 ---
-title: Hyde Park Map
-layout: maps
-description: '1920s map of Hyde Park'
-image: assets/images/southside.jpg
-nav-menu: true
+title: [Add title here]
+layout: maps (maps template can be found in the layout section. Custom css is controlled there)
+description: [Add your description here]
+image: assets/images/[YOUR IMAGE]
+nav-menu: false (if true, block will show up on front landing page)
 ---
-
+!-->
 <!DOCTYPE html>
 <html>
+<!--This controls the layer banner at the top of the map !-->
     <div class="custom-layer-control" id="overlay-controls">
         <div class="dropdown">
             <button class="dropbtn">Satellite Overlay</button>
@@ -79,11 +82,14 @@ nav-menu: true
         </div>
     </div>
     </div>
-<section id="one" class="section-map">
-    
-    <div id="map"></div>
+<!--More information about Section ID "one" can be found in components> section.scss AND skel.scss AND in the maps template !-->
+
+<section id="one">
+<!--More information about sidebar can be found in maps template !-->
+
     <div id="sidebar">
         <h2>Hyde Park</h2>
+<!--More information about legend can be found in maps template !-->
         <details class="legend">
             <summary><b>Legend</b></summary>
             <table>
@@ -150,14 +156,18 @@ nav-menu: true
 
         </details>
 <br>
+<!--More information about location box can be found in maps template !-->
+
 <h3>Location Information</h3>
         <div id="location-data" class="location-metadata">
             <p>
                 Here you will find information on what Hyde Park looked like in the 1920s. 
             </p>
         </div>
-    </div>	
+    </div>
+    <div id="map"></div>	
 </section>
+<!--Calling Scripts !-->
 
 <script src="https://parkerotto.github.io/Final/r20hp.js"></script>
 
@@ -165,6 +175,8 @@ nav-menu: true
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
+
+//Creating Map
 var map = L.map('map', {
             attributionControl: false
         }).setView([41.794, -87.5948], 16);
@@ -180,6 +192,8 @@ var map = L.map('map', {
         var imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
         });
+
+//Color Coding, This may be the same for all maps and can be reused
 
 function getZoningColor(fudgeZone) {
                 switch (fudgeZone) {
@@ -389,6 +403,8 @@ function getZoningColor(fudgeZone) {
                 }
             };
             
+//Pop-ups to append to sidebar, will need to be added to original GitHub code found on Parker's GitHub to adapt functionality
+
 var zoningOEF = function (feature, layer) {
                 if (feature.properties) {
                     var prop = feature.properties;
@@ -397,6 +413,8 @@ var zoningOEF = function (feature, layer) {
                         prop['fudgeZone']
                         + '<br><br><small><i>Zoning Class: ' + prop['zone_class'] +'</i></small>'
                         + '<br><small><i>Zoning Type: ' + prop['zone_type'] + '</i></small>';
+
+//Specific place for On Click functionality
 
                     feature.layer = layer;
                     layer.on('click', function (){
@@ -416,6 +434,7 @@ var zoningOEF = function (feature, layer) {
                         '<br><b>Footprint Year: </b>' + prop['Year'] +
                         '<br><b>Use: </b>' + prop['Use'] +
                         '<br><br><small>Coordinates: <i>' + prop['lat'] + ', ' + prop['long'] + '</i></small>';
+//Specific place for On Click functionality
 
                     feature.layer = layer;
                     
@@ -424,6 +443,7 @@ layer.on('click', function (){
   
 });
                   
+//Taken from Parker's original code
 
                     layer.on('click', function () {
                     if (!layer.halo) {
@@ -468,6 +488,8 @@ layer.on('click', function (){
                 );
                 }
             };
+
+//Will need to be adapted for each map
 var footprints = new L.geoJson(r20hp, 
                 {
                     style : style,
@@ -552,6 +574,7 @@ var footprints = new L.geoJson(r20hp,
                 }
             );
 
+//The following is different from line 460 on in Hyde Park r20 maps
 function switchBaseLayer(layer) {
             map.eachLayer(function(lyr) {
                 if (lyr !== layer) {
@@ -575,6 +598,7 @@ function switchBaseLayer(layer) {
             'Dwellings': dwellingFootprints
         };
 
+//Additional code to make custom-layer control work
         document.querySelectorAll('.custom-layer-control input[type="checkbox"]').forEach(function(checkbox) {
             checkbox.addEventListener('change', function() {
                 var layer = overlayLayers[this.labels[0].textContent];
@@ -614,32 +638,9 @@ function switchBaseLayer(layer) {
                 });
             });
         });
-        var basemaps = {
-                "Default": tilesource_layer,
-                "Satellite": imagery
-            };
-
-            var overlaymaps = {
-                "Blank Footprints": footprints,
-                "Blank Footprints (Satellite)": satFootprints,
-                "2023 Zoning Map" : zoningMap,
-                "Classified Footprints": classifiedFootprints,
-                "Churches" : churchFootprints,
-                "Hotels" : hotelFootprints,
-                "Industrial" : industrialFootprints,
-                "Institutional" : institutionalFootprints,
-                "UChicago" : uchicagoFootprints,
-                "Stores" : storeFootprints,
-                "Flats" : flatFootprints,
-                "Dwellings" : dwellingFootprints
-            };
-        L.control.layers(
-                basemaps, overlaymaps, {collapsed:true}).addTo(map);
         
     </script>
 
 </body>
 
 </html>
-
-
