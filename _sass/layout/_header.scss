@@ -58,7 +58,7 @@
 
 			&:active {
 				strong {
-					background-color: color.adjust(color.adjust(_palette(highlight), $lightness: -15%), $saturation: -5%);
+					background-color: _palette(highlight-after);
 				}
 			}
 		}
