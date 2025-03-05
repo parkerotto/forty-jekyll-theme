@@ -179,7 +179,11 @@ padding: 0.5em;
         height: 50vh;
         padding: 1rem;
         box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.3);
-        overflow: auto;
+    }
+
+    .custom-layer-control {
+        margin-left: 40%;
+        width: 60%;
     }
 
   }
