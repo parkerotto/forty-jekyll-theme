@@ -27,8 +27,12 @@ nav-menu: true
             <div class="dropdown-content">
                 <div>
                     <input type="checkbox" id="blank-footprints">
-                    <label for="blank-footprints">Satellite Footprints</label>
+                    <label for="blank-footprints">Blank Footprints</label>
                   </div>
+                <div>
+                    <input type="checkbox" id="sat-footprints">
+                    <label for="sat-footprints">Satellite Footprints</label>
+                </div>
             <div>
                     <input type="checkbox" id="classified-footprints" checked>
                     <label for="classified-footprints">Classified Footprints</label>
@@ -621,7 +625,7 @@ function switchBaseLayer(layer) {
 
             var overlaymaps = {
                 "Blank Footprints": satFootprints,
-                //"Blank Footprints (Satellite)": satFootprints,
+                "Blank Footprints (Satellite)": satFootprints,
                 "2023 Zoning Map" : zoningMap,
                 "Classified Footprints": classifiedFootprints,
                 "Churches" : churchFootprints,
