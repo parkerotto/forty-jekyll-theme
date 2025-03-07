@@ -265,14 +265,6 @@ function getZoningColor(fudgeZone) {
                 }
             };
 
-       //     function getFillOpacityByUse(use) {
-     //           switch (use) {
-     //               case 'Church': return 0.5;
-   //                 case 'Flat': return 0.9;
-   //                 default: return 0.7;
-   //             }
-  //          };
-
             function style(feature){
                 return {
                     fillColor: 'transparent',
@@ -625,7 +617,7 @@ function switchBaseLayer(layer) {
 
             var overlaymaps = {
                 "Blank Footprints": satFootprints,
-                "Blank Footprints (Satellite)": satFootprints,
+                "Satellite Footprints": satFootprints,
                 "2023 Zoning Map" : zoningMap,
                 "Classified Footprints": classifiedFootprints,
                 "Churches" : churchFootprints,
