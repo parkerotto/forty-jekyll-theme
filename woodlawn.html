@@ -1,13 +1,11 @@
-<!-- Uncomment this in order to make it visible, if you do not uncomment, the page will look strange. 
- Please do not edit this template directly. Instead, copy the template and change the name.
+
 ---
-title: [Add title here]
-layout: maps (maps template can be found in the layout section. Custom css is controlled there)
-description: [Add your description here]
-image: assets/images/[YOUR IMAGE]
-nav-menu: false (if true, block will show up on front landing page)
+title: Woodlawn Map
+layout: maps
+description: 'An interactive map of Woodlawn in 1926.'
+image: assets/images/southside.jpg
+nav-menu: true
 ---
-!-->
 <!DOCTYPE html>
 <html>
 <!--This controls the layer banner at the top of the map !-->
@@ -161,7 +159,7 @@ nav-menu: false (if true, block will show up on front landing page)
 <h3>Location Information</h3>
         <div id="location-data" class="location-metadata">
             <p>
-                Here you will find information on what Hyde Park looked like in the 1920s. 
+                Here you will find information on what Woodlawn looked like in the 1926. 
             </p>
         </div>
     </div>
@@ -169,7 +167,7 @@ nav-menu: false (if true, block will show up on front landing page)
 </section>
 <!--Calling Scripts !-->
 
-<script src="https://parkerotto.github.io/Final/r20hp.js"></script>
+<script src="https://parkerotto.github.io/R20/R20WL/r20wl.js"></script>
 
 <script src="https://parkerotto.github.io/Final/zoning.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -182,7 +180,7 @@ var map = L.map('map', {
         }).setView([41.794, -87.5948], 16);
         L.control.attribution({prefix: false}).addTo(map);
 
-        var tilesource_layer = L.tileLayer('https://parkerotto.github.io/Final/{z}/{x}/{y}.png', {
+        var tilesource_layer = L.tileLayer('https://parkerotto.github.io/R20/xyz/{z}/{x}/{y}.png', {
             minZoom: 15,
             maxZoom: 17,
             tms: false,
@@ -205,8 +203,8 @@ function getZoningColor(fudgeZone) {
                     default : return 'gray';
                 }
             };
-            function getColorByUse(use) {
-                switch (use) {
+            function getColorByUse(Uses) {
+                switch (Uses) {
                     case 'Church' : return '#9fed18'; // Lime
                     case 'Dwelling' : return '#987db7'; // Lavender
                     case 'Hotel' : return '#efc866'; // Yellow
@@ -219,57 +217,57 @@ function getZoningColor(fudgeZone) {
                 }
             };
 
-            function getChurchStyle(use) {
-                switch (use) {
+            function getChurchStyle(Uses) {
+                switch (Uses) {
                     case 'Church' : return '#9fed18';
                     default : return 'transparent';
                 }
             };
 
-            function getDwellingStyle(use) {
-                switch (use) {
+            function getDwellingStyle(Uses) {
+                switch (Uses) {
                     case 'Dwelling' : return '#987db7';
                     default : return 'transparent';
                 }
             };
 
-            function getHotelStyle(use) {
-                switch (use) {
+            function getHotelStyle(Uses) {
+                switch (Uses) {
                     case 'Hotel' : return '#efc866';
                     default : return 'transparent';
                 }
             };
 
-            function getIndustrialStyle(use) {
-                switch (use) {
+            function getIndustrialStyle(Uses) {
+                switch (Uses) {
                     case 'Industrial' : return '#00e9fe';
                     default : return 'transparent';
                 }
             };
             
-            function getInstitutionalStyle(use) {
-                switch (use) {
+            function getInstitutionalStyle(Uses) {
+                switch (Uses) {
                     case 'Institutio' : return '#ff8fd6'; // Pink
                     default : return 'transparent';
                 }
             };
 
-            function getStoreStyle(use) {
-                switch (use) {
+            function getStoreStyle(Uses) {
+                switch (Uses) {
                     case 'Store' : return '#d9615b'; // Burnt Siena
                     default : return 'transparent';
                 }
             };
 
-            function getFlatStyle(use) {
-                switch (use) {
+            function getFlatStyle(Uses) {
+                switch (Uses) {
                     case 'Flat' : return '#3596ce'; // Blue
                     default : return 'transparent';
                 }
             };
 
-            function getUchicagoStyle(use) {
-                switch (use) {
+            function getUchicagoStyle(Uses) {
+                switch (Uses) {
                     case 'UChicago' : return '#800000'; // Maroon
                     default : return 'transparent'; // Gray
                 }
@@ -305,7 +303,7 @@ function getZoningColor(fudgeZone) {
 
             function churchStyle(feature){
                 return {
-                    fillColor: getChurchStyle(feature.properties.Use),
+                    fillColor: getChurchStyle(feature.properties.Uses),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -315,7 +313,7 @@ function getZoningColor(fudgeZone) {
 
             function dwellingStyle(feature){
                 return {
-                    fillColor: getDwellingStyle(feature.properties.Use),
+                    fillColor: getDwellingStyle(feature.properties.Uses),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -325,7 +323,7 @@ function getZoningColor(fudgeZone) {
 
             function hotelStyle(feature){
                 return {
-                    fillColor: getHotelStyle(feature.properties.Use),
+                    fillColor: getHotelStyle(feature.properties.Uses),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -335,7 +333,7 @@ function getZoningColor(fudgeZone) {
 
             function industrialStyle(feature){
                 return {
-                    fillColor: getIndustrialStyle(feature.properties.Use),
+                    fillColor: getIndustrialStyle(feature.properties.Uses),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -345,7 +343,7 @@ function getZoningColor(fudgeZone) {
 
             function institutionalStyle(feature){
                 return {
-                    fillColor: getInstitutionalStyle(feature.properties.Use),
+                    fillColor: getInstitutionalStyle(feature.properties.Uses),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -355,7 +353,7 @@ function getZoningColor(fudgeZone) {
 
             function storeStyle(feature){
                 return {
-                    fillColor: getStoreStyle(feature.properties.Use),
+                    fillColor: getStoreStyle(feature.properties.Uses),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -365,7 +363,7 @@ function getZoningColor(fudgeZone) {
 
             function flatStyle(feature){
                 return {
-                    fillColor: getFlatStyle(feature.properties.Use),
+                    fillColor: getFlatStyle(feature.properties.Uses),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -375,7 +373,7 @@ function getZoningColor(fudgeZone) {
 
             function uchicagoStyle(feature){
                 return {
-                    fillColor: getUchicagoStyle(feature.properties.Use),
+                    fillColor: getUchicagoStyle(feature.properties.Uses),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -385,7 +383,7 @@ function getZoningColor(fudgeZone) {
 
             function customStyle(feature) {
                 return {
-                    fillColor: getColorByUse(feature.properties.Use),
+                    fillColor: getColorByUse(feature.properties.Uses),
                     weight: 1,
                     opacity: 1,
                     color: 'black',
@@ -490,77 +488,77 @@ layer.on('click', function (){
             };
 
 //Will need to be adapted for each map
-var footprints = new L.geoJson(r20hp, 
+var footprints = new L.geoJson(r20wl, 
                 {
                     style : style,
                     onEachFeature : onEachFeature
                 }
             );
 
-            var satFootprints = new L.geoJson(r20hp, 
+            var satFootprints = new L.geoJson(r20wl, 
                 {
                     style : satStyle,
                     onEachFeature : onEachFeature
                 }
             );
 
-            var classifiedFootprints = new L.geoJson(r20hp, 
+            var classifiedFootprints = new L.geoJson(r20wl, 
                 {
                     style : customStyle,
                     onEachFeature : onEachFeature
                 }
             ).addTo(map);
 
-            var churchFootprints = new L.geoJson(r20hp,
+            var churchFootprints = new L.geoJson(r20wl,
                 {
                     style : churchStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var dwellingFootprints = new L.geoJson(r20hp,
+            var dwellingFootprints = new L.geoJson(r20wl,
                 {
                     style : dwellingStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var hotelFootprints = new L.geoJson(r20hp,
+            var hotelFootprints = new L.geoJson(r20wl,
                 {
                     style : hotelStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var industrialFootprints = new L.geoJson(r20hp,
+            var industrialFootprints = new L.geoJson(r20wl,
                 {
                     style : industrialStyle,
                     onEachFeature: onEachFeature
                 }
             );
     
-            var institutionalFootprints = new L.geoJson(r20hp,
+            var institutionalFootprints = new L.geoJson(r20wl,
                 {
                     style : institutionalStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var storeFootprints = new L.geoJson(r20hp,
+            var storeFootprints = new L.geoJson(r20wl,
                 {
                     style : storeStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var flatFootprints = new L.geoJson(r20hp,
+            var flatFootprints = new L.geoJson(r20wl,
                 {
                     style : flatStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var uchicagoFootprints = new L.geoJson(r20hp,
+            var uchicagoFootprints = new L.geoJson(r20wl,
                 {
                     style : uchicagoStyle,
                     onEachFeature: onEachFeature
