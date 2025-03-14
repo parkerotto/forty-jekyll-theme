@@ -82,7 +82,7 @@ nav-menu: true
     </div>
 <!--More information about Section ID "one" can be found in components> section.scss AND skel.scss AND in the maps template !-->
 
-<section id="one">
+<section id="one" class="section-map">
 <!--More information about sidebar can be found in maps template !-->
 
     <div id="sidebar">
@@ -96,6 +96,21 @@ nav-menu: true
                   <td><span class="legend-colorBox" style="background-color: #9fed18;">
                 </span></td>
                 </tr>
+                <tr>
+                    <td>Garage</td>
+                    <td><span class="legend-colorBox" style="background-color: #006400;">
+                  </span></td>
+                  </tr>
+                  <tr>
+                    <td>Theater</td>
+                    <td><span class="legend-colorBox" style="background-color: #FF0000;">
+                  </span></td>
+                  </tr>
+                  <tr>
+                    <td>Transit</td>
+                    <td><span class="legend-colorBox" style="background-color: #000000;">
+                  </span></td>
+                  </tr>
                 <tr>
                   <td>Dwelling</td>
                   <td><span class="legend-colorBox" style="background-color: #987db7;">
@@ -171,13 +186,13 @@ nav-menu: true
 
 <script src="https://parkerotto.github.io/Final/zoning.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
 
 //Creating Map
 var map = L.map('map', {
             attributionControl: false
-        }).setView([41.794, -87.5948], 16);
+        }).setView([41.7803, -87.6059], 16);
         L.control.attribution({prefix: false}).addTo(map);
 
         var tilesource_layer = L.tileLayer('https://parkerotto.github.io/R20/xyz/{z}/{x}/{y}.png', {
@@ -209,14 +224,38 @@ function getZoningColor(fudgeZone) {
                     case 'Dwelling' : return '#987db7'; // Lavender
                     case 'Hotel' : return '#efc866'; // Yellow
                     case 'Industrial' : return '#00e9fe'; // Light Blue
-                    case 'Institutio' : return '#ff8fd6'; // Pink
+                    case 'Institutional' : return '#ff8fd6'; // Pink
                     case 'Store' : return '#d9615b'; // Burnt Siena
                     case 'Flat' : return '#3596ce'; // Blue
                     case 'UChicago' : return '#800000'; // Maroon
+                    case 'Theater' : return '#FF0000'; //Red
+                    case 'Garage' : return '#006400'; // Green
+                    case 'Transit' : return '#000000'; //Black
                     default : return '#808080'; // Gray
                 }
             };
 
+            function getTheaterStyle(Uses) {
+                switch (Uses) {
+                    case 'Theater' : return '#FF0000'; 
+                    default: return 'transparent';
+                }
+            };
+
+            function getGarageStyle(Uses) {
+                switch (Uses) {
+                    case 'Garage' : return '#006400'; 
+                    default: return 'transparent';
+                }
+            };
+
+            function getTransitStyle(Uses) {
+                switch (Uses) {
+                    case 'Transit' : return '#000000'; //PLACEHOLDER COLOR
+                    default: return 'transparent';
+                }
+            };
+            
             function getChurchStyle(Uses) {
                 switch (Uses) {
                     case 'Church' : return '#9fed18';
@@ -247,7 +286,7 @@ function getZoningColor(fudgeZone) {
             
             function getInstitutionalStyle(Uses) {
                 switch (Uses) {
-                    case 'Institutio' : return '#ff8fd6'; // Pink
+                    case 'Institutional' : return '#ff8fd6'; // Pink
                     default : return 'transparent';
                 }
             };
