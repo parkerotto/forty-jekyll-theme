@@ -340,6 +340,36 @@ function getZoningColor(fudgeZone) {
                 }
             };
 
+            function transitStyle(feature){
+                return {
+                    fillColor: getTransitStyle(feature.properties.Uses),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function garageStyle(feature){
+                return {
+                    fillColor: getGarageStyle(feature.properties.Uses),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function theaterStyle(feature){
+                return {
+                    fillColor: getTheaterStyle(feature.properties.Uses),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
             function churchStyle(feature){
                 return {
                     fillColor: getChurchStyle(feature.properties.Uses),
@@ -555,6 +585,27 @@ var footprints = new L.geoJson(r20wl,
                 }
             );
 
+            var theaterFootprints = new L.geoJson(r20wl,
+                {
+                    style : theaterStyle,
+                    onEachFeature: onEachFeature
+                }
+            );
+
+            var garageFootprints = new L.geoJson(r20wl,
+                {
+                    style : garageStyle,
+                    onEachFeature: onEachFeature
+                }
+            );
+
+            var transitFootprints = new L.geoJson(r20wl,
+                {
+                    style : transitStyle,
+                    onEachFeature: onEachFeature
+                }
+            );
+
             var dwellingFootprints = new L.geoJson(r20wl,
                 {
                     style : dwellingStyle,
@@ -624,8 +675,12 @@ function switchBaseLayer(layer) {
         var overlayLayers = {
             'Blank Footprints': satFootprints,
             'Classified Footprints': classifiedFootprints,
+            'Satellite Footprints': satFootprints,
           "2023 Zoning Map" : zoningMap,
             'Churches': churchFootprints,
+            'Theaters': theaterFootprints,
+            'Garages': garageFootprints,
+            'Transit': transitFootprints,
             'Hotels': hotelFootprints,
             'Industrial': industrialFootprints,
             'Institutional': institutionalFootprints,
