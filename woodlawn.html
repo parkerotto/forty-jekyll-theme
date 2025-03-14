@@ -96,6 +96,7 @@ nav-menu: true
 
 <section id="one" class="section-map">
 <!--More information about sidebar can be found in maps template !-->
+<div id="map"></div>	
 
     <div id="sidebar">
         <h2>Hyde Park</h2>
@@ -190,7 +191,6 @@ nav-menu: true
             </p>
         </div>
     </div>
-    <div id="map"></div>	
 </section>
 <!--Calling Scripts !-->
 
@@ -511,7 +511,7 @@ var zoningOEF = function (feature, layer) {
                         '<b>Sanborn: </b>' + prop['Sanborn'] +
                         '<br><b>Footprint Area: </b>' + prop['area'] + ' m<sup>2</sup>' +
                         '<br><b>Footprint Year: </b>' + prop['Year'] +
-                        '<br><b>Use: </b>' + prop['Use'] +
+                        '<br><b>Use: </b>' + prop['Uses'] +
                         '<br><br><small>Coordinates: <i>' + prop['lat'] + ', ' + prop['long'] + '</i></small>';
 //Specific place for On Click functionality
 
