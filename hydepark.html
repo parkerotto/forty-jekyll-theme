@@ -336,6 +336,36 @@ function getZoningColor(fudgeZone) {
                 }
             };
 
+            function transitStyle(feature){
+                return {
+                    fillColor: getTransitStyle(feature.properties.Use),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function garageStyle(feature){
+                return {
+                    fillColor: getGarageStyle(feature.properties.Use),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function theaterStyle(feature){
+                return {
+                    fillColor: getTheaterStyle(feature.properties.Use),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
             function churchStyle(feature){
                 return {
                     fillColor: getChurchStyle(feature.properties.Use),
