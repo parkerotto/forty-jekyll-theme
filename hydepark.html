@@ -248,6 +248,16 @@ function getZoningColor(fudgeZone) {
                 }
             };
 
+            function getColor(value) {
+                return value >10 ? '#d45e5e':
+                    value > 8 ? '#f08080': 
+                    value > 6 ? '#f4978e': 
+                    value > 4 ? '#f8ad9d': 
+                    value > 2 ? '#fbc4ab': 
+                    value > 1 ? '#ffdab9': 
+                    '#ffffff';
+            };
+
             function getChurchStyle(use) {
                 switch (use) {
                     case 'Church' : return '#9fed18';
@@ -465,6 +475,16 @@ function getZoningColor(fudgeZone) {
                 }
             };
 
+            function heightStyle(feature) {
+                return{
+                    fillColor: getColor(feature.properties.Height),
+                    weight: 1,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
             function zoningColor(feature){
                 return {
                     fillColor: getZoningColor(feature.properties.fudgeZone),
@@ -578,6 +598,13 @@ var footprints = new L.geoJson(r20hp,
                 }
             ).addTo(map);
 
+            var heightFootprints = new L.geoJson(r20hp,
+                {
+                    style : heightStyle,
+                    onEachFeature : onEachFeature
+                }
+            );
+
             var churchFootprints = new L.geoJson(r20hp,
                 {
                     style : churchStyle,
@@ -676,6 +703,7 @@ function switchBaseLayer(layer) {
             'Classified Footprints': classifiedFootprints,
             'Satellite Footprints': satFootprints,
           "2023 Zoning Map" : zoningMap,
+            'Building Height' : heightFootprints,
             'Churches': churchFootprints,
             'Theaters': theaterFootprints,
             'Garages': garageFootprints,
@@ -738,6 +766,7 @@ function switchBaseLayer(layer) {
                 "Satellite Footprints": satFootprints,
                 "2023 Zoning Map" : zoningMap,
                 "Classified Footprints": classifiedFootprints,
+                'Building Height' : heightFootprints,
                 "Churches" : churchFootprints,
                 'Theaters': theaterFootprints,
                 'Garages': garageFootprints,
