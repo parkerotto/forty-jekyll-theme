@@ -50,6 +50,10 @@ nav-menu: true
                         <input type="checkbox" id="building-height">
                         <label for="building-height">Building Height</label>
                       </div>
+                      <div>
+                        <input type="checkbox" id="building-material">
+                        <label for="building-material">Building Material</label>
+                      </div>
                     </div>
                 </div>
                 <div class="dropdown">
@@ -231,6 +235,17 @@ function getZoningColor(fudgeZone) {
                     default : return 'gray';
                 }
             };
+
+            function getMaterialColor(material) {
+                switch (material) {
+                    case 'W' : return '#D7D773';
+                    case 'B' : return '#eaa2b6';
+                    case 'F' : return '#96804f';
+                    case 'S' : return '#6797C2';
+                    default : return 'gray';
+                }
+            };
+
             function getColorByUse(use) {
                 switch (use) {
                     case 'Church' : return '#9fed18'; // Lime
@@ -355,6 +370,16 @@ function getZoningColor(fudgeZone) {
                 }
             };
 
+            function materialStyle(feature){
+                return {
+                    fillColor: getMaterialColor(feature.properties.Material),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+            
             function transitStyle(feature){
                 return {
                     fillColor: getTransitStyle(feature.properties.Use),
@@ -605,6 +630,13 @@ var footprints = new L.geoJson(r20hp,
                 }
             );
 
+            var materialFootprints = new L.geoJson(r20hp,
+                {
+                    style : materialStyle,
+                    onEachFeature : onEachFeature
+                }
+            );
+
             var churchFootprints = new L.geoJson(r20hp,
                 {
                     style : churchStyle,
@@ -704,6 +736,7 @@ function switchBaseLayer(layer) {
             'Satellite Footprints': satFootprints,
           "2023 Zoning Map" : zoningMap,
             'Building Height' : heightFootprints,
+            'Building Material' : materialFootprints,
             'Churches': churchFootprints,
             'Theaters': theaterFootprints,
             'Garages': garageFootprints,
@@ -767,6 +800,7 @@ function switchBaseLayer(layer) {
                 "2023 Zoning Map" : zoningMap,
                 "Classified Footprints": classifiedFootprints,
                 'Building Height' : heightFootprints,
+                'Building Material' : materialFootprints,
                 "Churches" : churchFootprints,
                 'Theaters': theaterFootprints,
                 'Garages': garageFootprints,
