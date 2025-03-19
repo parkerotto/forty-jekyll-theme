@@ -52,6 +52,18 @@ nav-menu: true
                               <label for="churches">Churches</label>
                           </div>
                           <div>
+                            <input type="checkbox" id="theaters">
+                            <label for="theaters">Theaters</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="garages">
+                            <label for="garages">Garages</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="transit">
+                            <label for="transit">Transit</label>
+                        </div>
+                          <div>
                               <input type="checkbox" id="hotels">
                               <label for="hotels">Hotels</label>
                           </div>
@@ -96,6 +108,21 @@ nav-menu: true
                   <td><span class="legend-colorBox" style="background-color: #9fed18;">
                 </span></td>
                 </tr>
+                <tr>
+                    <td>Garage</td>
+                    <td><span class="legend-colorBox" style="background-color: #006400;">
+                  </span></td>
+                  </tr>
+                  <tr>
+                    <td>Theater</td>
+                    <td><span class="legend-colorBox" style="background-color: #FF0000;">
+                  </span></td>
+                  </tr>
+                  <tr>
+                    <td>Transit</td>
+                    <td><span class="legend-colorBox" style="background-color: #000000;">
+                  </span></td>
+                  </tr>
                 <tr>
                   <td>Dwelling</td>
                   <td><span class="legend-colorBox" style="background-color: #987db7;">
@@ -163,7 +190,7 @@ nav-menu: true
     </div>	
 </section>
 
-<script src="https://parkerotto.github.io/Final/r20hp.js"></script>
+<script src="https://parkerotto.github.io/R20/R20HP/r20hp_height.js"></script>
 
 <script src="https://parkerotto.github.io/Final/zoning.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -201,10 +228,13 @@ function getZoningColor(fudgeZone) {
                     case 'Dwelling' : return '#987db7'; // Lavender
                     case 'Hotel' : return '#efc866'; // Yellow
                     case 'Industrial' : return '#00e9fe'; // Light Blue
-                    case 'Institutio' : return '#ff8fd6'; // Pink
+                    case 'Institutional' : return '#ff8fd6'; // Pink
                     case 'Store' : return '#d9615b'; // Burnt Siena
                     case 'Flat' : return '#3596ce'; // Blue
                     case 'UChicago' : return '#800000'; // Maroon
+                    case 'Theater' : return '#FF0000'; //Red
+                    case 'Garage' : return '#006400'; // Green
+                    case 'Transit' : return '#000000'; //Black
                     default : return '#808080'; // Gray
                 }
             };
@@ -213,6 +243,27 @@ function getZoningColor(fudgeZone) {
                 switch (use) {
                     case 'Church' : return '#9fed18';
                     default : return 'transparent';
+                }
+            };
+
+            function getTheaterStyle(Uses) {
+                switch (Uses) {
+                    case 'Theater' : return '#FF0000'; 
+                    default: return 'transparent';
+                }
+            };
+
+            function getGarageStyle(Uses) {
+                switch (Uses) {
+                    case 'Garage' : return '#006400'; 
+                    default: return 'transparent';
+                }
+            };
+
+            function getTransitStyle(Uses) {
+                switch (Uses) {
+                    case 'Transit' : return '#000000'; //PLACEHOLDER COLOR
+                    default: return 'transparent';
                 }
             };
 
@@ -239,7 +290,7 @@ function getZoningColor(fudgeZone) {
             
             function getInstitutionalStyle(use) {
                 switch (use) {
-                    case 'Institutio' : return '#ff8fd6'; // Pink
+                    case 'Institutional' : return '#ff8fd6'; // Pink
                     default : return 'transparent';
                 }
             };
@@ -411,6 +462,9 @@ var zoningOEF = function (feature, layer) {
                         '<br><b>Footprint Area: </b>' + prop['area'] + ' m<sup>2</sup>' +
                         '<br><b>Footprint Year: </b>' + prop['Year'] +
                         '<br><b>Use: </b>' + prop['Use'] +
+                        '<br><b>Height: </b>' + prop['Height'] + ' Stories' + 
+                        '<br><b>Primary Material: </b>' + prop['Material'] + 
+                        '<br><b>Building Name (If Applicable): </b>' + prop['Name'] + 
                         '<br><br><small>Coordinates: <i>' + prop['lat'] + ', ' + prop['long'] + '</i></small>';
 
                     feature.layer = layer;
@@ -492,6 +546,27 @@ var footprints = new L.geoJson(r20hp,
                 }
             );
 
+            var theaterFootprints = new L.geoJson(r20wl,
+                {
+                    style : theaterStyle,
+                    onEachFeature: onEachFeature
+                }
+            );
+
+            var garageFootprints = new L.geoJson(r20wl,
+                {
+                    style : garageStyle,
+                    onEachFeature: onEachFeature
+                }
+            );
+
+            var transitFootprints = new L.geoJson(r20wl,
+                {
+                    style : transitStyle,
+                    onEachFeature: onEachFeature
+                }
+            );
+
             var dwellingFootprints = new L.geoJson(r20hp,
                 {
                     style : dwellingStyle,
@@ -563,6 +638,9 @@ function switchBaseLayer(layer) {
             'Satellite Footprints': satFootprints,
           "2023 Zoning Map" : zoningMap,
             'Churches': churchFootprints,
+            'Theaters': theaterFootprints,
+            'Garages': garageFootprints,
+            'Transit': transitFootprints,
             'Hotels': hotelFootprints,
             'Industrial': industrialFootprints,
             'Institutional': institutionalFootprints,
@@ -622,6 +700,9 @@ function switchBaseLayer(layer) {
                 "2023 Zoning Map" : zoningMap,
                 "Classified Footprints": classifiedFootprints,
                 "Churches" : churchFootprints,
+                'Theaters': theaterFootprints,
+                'Garages': garageFootprints,
+                'Transit': transitFootprints,
                 "Hotels" : hotelFootprints,
                 "Industrial" : industrialFootprints,
                 "Institutional" : institutionalFootprints,
