@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Who We Are
-image: assets/images/chicago-splash.jpeg
+image: assets/images/southside.jpg
 nav-menu: true
 ---
 

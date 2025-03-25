@@ -1,7 +1,7 @@
 ---
 layout: post
 title: About the Project
-description: Lorem ipsum dolor est
+description: 
 image: assets/images/hp-image.jpg
 nav-menu: true
 ---
