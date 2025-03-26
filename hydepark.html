@@ -38,8 +38,8 @@ nav-menu: true
                     <label for="classified-footprints">Classified Footprints</label>
                 </div>
             <div>
-                    <input type="checkbox" id="2023-zoning-map">
-                    <label for="2023-zoning-map">2023 Zoning Map</label>
+                    <input type="checkbox" id="2024-zoning-map">
+                    <label for="2024-zoning-map">2024 Zoning Map</label>
                   </div>
                 </div>
             </div>
@@ -129,7 +129,7 @@ nav-menu: true
 
 <script src="https://parkerotto.github.io/R20/R20HP/r20hp_height_dec.js"></script>
 
-<script src="https://parkerotto.github.io/Final/zoning.js"></script>
+<script src="jsons/hpzoning2024.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
@@ -142,20 +142,22 @@ var map = L.map('map', {
             minZoom: 15,
             maxZoom: 18,
             tms: false,
-            attribution: 'Created by Parker Otto (2024) using QGIS.  2023 Street Centerlines, 2016 Chicago Park District Boundaries, 2012 Waterways, and 2023 Community Area Boundaries from the Chicago Data Portal.'
+            attribution: 'Created by Parker Otto (2024) using QGIS.  2024 Street Centerlines, 2016 Chicago Park District Boundaries, 2012 Waterways, and 2024 Community Area Boundaries from the Chicago Data Portal.'
         }).addTo(map);
 
         var imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
         });
 
-function getZoningColor(fudgeZone) {
-                switch (fudgeZone) {
-                    case 'Business and Commercial' : return 'orange';
-                    case 'Planned Development' : return 'maroon';
-                    case 'Multi-Family Residential' : return 'purple';
-                    case 'Single-Family Residential' : return 'yellow';
-                    case 'Open Space' : return 'lime';
+function getZoningColor(zone_class) {
+                switch (zone_class) {
+                    case 'B' : return '#fbb4ae';
+                    case 'PD' : return '#b3cde3';
+                    case 'RM' : return '#decbe4';
+                    case 'RS' : return '#fed9a6';
+                    case 'RT' : return '#e5d8bd';
+                    case 'T' : return '#fdc086';
+                    case 'POS' : return '#ccebc5';
                     default : return 'gray';
                 }
             };
@@ -435,11 +437,11 @@ function getZoningColor(fudgeZone) {
 
             function zoningColor(feature){
                 return {
-                    fillColor: getZoningColor(feature.properties.fudgeZone),
+                    fillColor: getZoningColor(feature.properties.zone_class),
                     weight: 2,
                     opacity: 1,
                     color: 'black',
-                    fillOpacity: 0.4
+                    fillOpacity: 0.6
                 }
             };
             
@@ -448,10 +450,7 @@ var zoningOEF = function (feature, layer) {
                     var prop = feature.properties;
                     var popup1 =
                         '<h3>Zoning</h3>' +
-                        prop['fudgeZone']
-                        + '<br><br><small><i>Zoning Class: ' + prop['zone_class'] +'</i></small>'
-                        + '<br><small><i>Zoning Type: ' + prop['zone_type'] + '</i></small>';
-
+                        prop['zone_class'];
                     feature.layer = layer;
                     layer.on('click', function (){
   document.getElementById('location-data').innerHTML = `${popup1}`
@@ -637,7 +636,7 @@ var footprints = new L.geoJson(r20hp,
                 }
             );
 
-            var zoningMap = new L.geoJson(zoning,
+            var zoningMap = new L.geoJson(hpZoning2024,
                 {
                     style: zoningColor,
                     onEachFeature: zoningOEF
@@ -725,11 +724,6 @@ var footprints = new L.geoJson(r20hp,
                     </tr>
                 </table>`;
             }
-           // case 'W' : return '#D7D773';
-             //       case 'B' : return '#eaa2b6';
-               //     case 'F' : return '#96804f';
-                 //   case 'S' : return '#6797C2';
-                   // default : return 'gray';
 
             if (document.getElementById('building-material').checked) {
                 tableContent = `
@@ -752,6 +746,40 @@ var footprints = new L.geoJson(r20hp,
                     </tr>
                 </table>`;
             }
+
+            if (document.getElementById('2024-zoning-map').checked) {
+                tableContent = `
+                <table>
+                    <tr>
+                        <td>Business & Commercial (B & C)</td>
+                        <td><span class="legend-colorBox" style="background-color: #b3cde3;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Planned Development (PD)</td>
+                        <td><span class="legend-colorBox" style="background-color: #b3cde3;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Multi-Family Residential (RM)</td>
+                        <td><span class="legend-colorBox" style="background-color: #decbe4;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Single-Family Residential (RS)</td>
+                        <td><span class="legend-colorBox" style="background-color: #fed9a6;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Townhome Residential (RT)</td>
+                        <td><span class="legend-colorBox" style="background-color: #e5d8bd;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Transportation (T)</td>
+                        <td><span class="legend-colorBox" style="background-color: #fdc086;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Planned Open Space (POS)</td>
+                        <td><span class="legend-colorBox" style="background-color: #ccebc5;"></span></td>
+                    </tr>
+                </table>`;
+            }
             var legendTable = document.getElementById('legend-table');
             legendTable.innerHTML = tableContent;
         };
@@ -769,7 +797,7 @@ function switchBaseLayer(layer) {
             'Blank Footprints': footprints,
             'Classified Footprints': classifiedFootprints,
             'Satellite Footprints': satFootprints,
-          "2023 Zoning Map" : zoningMap,
+            "2024 Zoning Map" : zoningMap,
             'Building Height' : heightFootprints,
             'Building Material' : materialFootprints,
             'Churches': churchFootprints,
@@ -833,7 +861,7 @@ function switchBaseLayer(layer) {
             var overlaymaps = {
                 "Blank Footprints": footprints,
                 "Satellite Footprints": satFootprints,
-                "2023 Zoning Map" : zoningMap,
+                "2024 Zoning Map" : zoningMap,
                 "Classified Footprints": classifiedFootprints,
                 'Building Height' : heightFootprints,
                 'Building Material' : materialFootprints,
