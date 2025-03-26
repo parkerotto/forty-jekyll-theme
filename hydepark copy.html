@@ -3,7 +3,7 @@ title: Hyde Park Map
 layout: maps
 description: 'An interactive map of Hyde Park in 1925-6'
 image: assets/images/hydepark.jpg
-nav-menu: true
+nav-menu: false
 ---
 
 <!DOCTYPE html>
@@ -115,7 +115,83 @@ nav-menu: true
         <h2>Hyde Park</h2>
         <details class="legend">
             <summary><b>Legend</b></summary>
-            <span id='legend-table'></span>
+            <table>
+                <tr>
+                  <td>Church</td>
+                  <td><span class="legend-colorBox" style="background-color: #9fed18;">
+                </span></td>
+                </tr>
+                <tr>
+                    <td>Garage</td>
+                    <td><span class="legend-colorBox" style="background-color: #006400;">
+                  </span></td>
+                  </tr>
+                  <tr>
+                    <td>Theater</td>
+                    <td><span class="legend-colorBox" style="background-color: #FF0000;">
+                  </span></td>
+                  </tr>
+                  <tr>
+                    <td>Transit</td>
+                    <td><span class="legend-colorBox" style="background-color: #000000;">
+                  </span></td>
+                  </tr>
+                <tr>
+                  <td>Dwelling</td>
+                  <td><span class="legend-colorBox" style="background-color: #987db7;">
+                </span></td>
+                </tr>
+                <tr>
+                    <td>Hotel</td>
+                    <td>              
+                        <span class="legend-colorBox" style="background-color: #efc866;">
+                  </span>
+                </td>
+                  </tr>
+                  <tr>
+                    <td>Industrial</td>
+                    <td>              
+                        <span class="legend-colorBox" style="background-color: #00e9fe;">
+                        </span>
+                </td>
+                  </tr>
+                  <tr>
+                    <td>Institution</td>
+                    <td>              
+                        <span class="legend-colorBox" style="background-color: #ff8fd6;">
+                        </span>
+                </td>
+                  </tr>
+                  <tr>
+                    <td>Store</td>
+                    <td>              
+                        <span class="legend-colorBox" style="background-color: #d9615b;">
+                        </span>
+                </td>
+                  </tr>
+                  <tr>
+                    <td>Flat</td>
+                    <td>              
+                        <span class="legend-colorBox" style="background-color: #3596ce;">
+                        </span>
+                </td>
+                  </tr>
+                  <tr>
+                    <td>UChicago</td>
+                    <td>              
+                        <span class="legend-colorBox" style="background-color: #800000;">
+                        </span>
+                </td>
+                  </tr>
+              <tr>
+                <td>Default</td>
+                <td>              
+                    <span class="legend-colorBox" style="background-color: #808080;">
+                    </span>
+            </td>
+              </tr>
+            </table>
+
         </details>
 <br>
 <h3>Location Information</h3>
@@ -644,65 +720,6 @@ var footprints = new L.geoJson(r20hp,
                 }
             );
 
-            function updateLegend() {
-            var tableContent = "";
-            if (document.getElementById('classified-footprints').checked) {
-                tableContent = `
-                <table>
-                    <tr>
-                        <td>Church</td>
-                        <td><span class="legend-colorBox" style="background-color: #9fed18;"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Garage</td>
-                        <td><span class="legend-colorBox" style="background-color: #006400;"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Theater</td>
-                        <td><span class="legend-colorBox" style="background-color: #FF0000;"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Transit</td>
-                        <td><span class="legend-colorBox" style="background-color: #000000;"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Dwelling</td>
-                        <td><span class="legend-colorBox" style="background-color: #987db7;"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Hotel</td>
-                        <td><span class="legend-colorBox" style="background-color: #efc866;"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Industrial</td>
-                        <td><span class="legend-colorBox" style="background-color: #00e9fe;"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Institution</td>
-                        <td><span class="legend-colorBox" style="background-color: #ff8fd6;"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Store</td>
-                        <td><span class="legend-colorBox" style="background-color: #d9615b;"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Flat</td>
-                        <td><span class="legend-colorBox" style="background-color: #3596ce;"></span></td>
-                    </tr>
-                    <tr>
-                        <td>UChicago</td>
-                        <td><span class="legend-colorBox" style="background-color: #800000;"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Default</td>
-                        <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
-                    </tr>
-                </table>`;
-            }
-            var legendTable = document.getElementById('legend-table');
-            legendTable.innerHTML = tableContent;
-        };
-
 function switchBaseLayer(layer) {
             map.eachLayer(function(lyr) {
                 if (lyr !== layer) {
@@ -740,7 +757,6 @@ function switchBaseLayer(layer) {
                 } else {
                     map.removeLayer(layer);
                 }
-                updateLegend()
             });
         });
 
@@ -798,7 +814,6 @@ function switchBaseLayer(layer) {
             };
         L.control.layers(
                 basemaps, overlaymaps, {collapsed:true}).addTo(map);
-                updateLegend();
         
     </script>
 
