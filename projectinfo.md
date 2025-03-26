@@ -2,7 +2,7 @@
 layout: post
 title: About the Project
 description: 
-image: assets/images/hp-image.jpg
+image: assets/images/southside.jpg
 nav-menu: true
 ---
 
