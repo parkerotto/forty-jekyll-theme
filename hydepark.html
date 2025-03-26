@@ -699,6 +699,59 @@ var footprints = new L.geoJson(r20hp,
                     </tr>
                 </table>`;
             }
+
+            if (document.getElementById('building-height').checked) {
+                tableContent = `
+                <table>
+                    <tr>
+                        <td>7+ Stories</td>
+                        <td><span class="legend-colorBox" style="background-color: #810f7c;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>4 - 6.5 Stories</td>
+                        <td><span class="legend-colorBox" style="background-color: #8856a7;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>3 - 3.5 Stories</td>
+                        <td><span class="legend-colorBox" style="background-color: #8c96c6;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>1.5 - 2.5 Stories</td>
+                        <td><span class="legend-colorBox" style="background-color: #b3cde3;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>1 Story</td>
+                        <td><span class="legend-colorBox" style="background-color: #edf8fb;"></span></td>
+                    </tr>
+                </table>`;
+            }
+           // case 'W' : return '#D7D773';
+             //       case 'B' : return '#eaa2b6';
+               //     case 'F' : return '#96804f';
+                 //   case 'S' : return '#6797C2';
+                   // default : return 'gray';
+
+            if (document.getElementById('building-material').checked) {
+                tableContent = `
+                <table>
+                    <tr>
+                        <td>Brick (B)</td>
+                        <td><span class="legend-colorBox" style="background-color: #eaa2b6;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Wood (W)</td>
+                        <td><span class="legend-colorBox" style="background-color: #D7D773;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Stone (S)</td>
+                        <td><span class="legend-colorBox" style="background-color: #6797C2;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Fireproof Construction (F)</td>
+                        <td><span class="legend-colorBox" style="background-color: #96804f;"></span></td>
+                    </tr>
+                </table>`;
+            }
             var legendTable = document.getElementById('legend-table');
             legendTable.innerHTML = tableContent;
         };
