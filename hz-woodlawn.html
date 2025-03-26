@@ -35,8 +35,8 @@ nav-menu: true
                     <label for="classified-footprints">Classified Footprints</label>
                 </div>
             <div>
-                    <input type="checkbox" id="2023-zoning-map">
-                    <label for="2023-zoning-map">2023 Zoning Map</label>
+                    <input type="checkbox" id="2024-zoning-map">
+                    <label for="2024-zoning-map">2024 Zoning Map</label>
                   </div>
                 </div>
             </div>
@@ -101,93 +101,17 @@ nav-menu: true
     <div id="sidebar">
         <h2>Hyde Park</h2>
 <!--More information about legend can be found in maps template !-->
-        <details class="legend">
-            <summary><b>Legend</b></summary>
-            <table>
-                <tr>
-                  <td>Church</td>
-                  <td><span class="legend-colorBox" style="background-color: #9fed18;">
-                </span></td>
-                </tr>
-                <tr>
-                    <td>Garage</td>
-                    <td><span class="legend-colorBox" style="background-color: #006400;">
-                  </span></td>
-                  </tr>
-                  <tr>
-                    <td>Theater</td>
-                    <td><span class="legend-colorBox" style="background-color: #FF0000;">
-                  </span></td>
-                  </tr>
-                  <tr>
-                    <td>Transit</td>
-                    <td><span class="legend-colorBox" style="background-color: #000000;">
-                  </span></td>
-                  </tr>
-                <tr>
-                  <td>Dwelling</td>
-                  <td><span class="legend-colorBox" style="background-color: #987db7;">
-                </span></td>
-                </tr>
-                <tr>
-                    <td>Hotel</td>
-                    <td>              
-                        <span class="legend-colorBox" style="background-color: #efc866;">
-                  </span>
-                </td>
-                  </tr>
-                  <tr>
-                    <td>Industrial</td>
-                    <td>              
-                        <span class="legend-colorBox" style="background-color: #00e9fe;">
-                        </span>
-                </td>
-                  </tr>
-                  <tr>
-                    <td>Institution</td>
-                    <td>              
-                        <span class="legend-colorBox" style="background-color: #ff8fd6;">
-                        </span>
-                </td>
-                  </tr>
-                  <tr>
-                    <td>Store</td>
-                    <td>              
-                        <span class="legend-colorBox" style="background-color: #d9615b;">
-                        </span>
-                </td>
-                  </tr>
-                  <tr>
-                    <td>Flat</td>
-                    <td>              
-                        <span class="legend-colorBox" style="background-color: #3596ce;">
-                        </span>
-                </td>
-                  </tr>
-                  <tr>
-                    <td>UChicago</td>
-                    <td>              
-                        <span class="legend-colorBox" style="background-color: #800000;">
-                        </span>
-                </td>
-                  </tr>
-              <tr>
-                <td>Default</td>
-                <td>              
-                    <span class="legend-colorBox" style="background-color: #808080;">
-                    </span>
-            </td>
-              </tr>
-            </table>
-
-        </details>
+<details class="legend">
+    <summary><b>Legend</b></summary>
+    <span id='legend-table'></span>
+</details>
 <br>
 <!--More information about location box can be found in maps template !-->
 
 <h3>Location Information</h3>
         <div id="location-data" class="location-metadata">
             <p>
-                Here you will find information on what Woodlawn looked like in the 1926. 
+                Here you will find information on what Woodlawn looked like in the 1926. <br><br>Click on a building to explore the data! <br><br>NOTE: The "Classified Footprints" (found under Building Usage/Zone) MUST be toggled off for filters to work.
             </p>
         </div>
     </div>
@@ -196,7 +120,7 @@ nav-menu: true
 
 <script src="https://parkerotto.github.io/R20/R20WL/r20wl.js"></script>
 
-<script src="https://parkerotto.github.io/Final/zoning.js"></script>
+<script src="jsons/r20wl2024zoning.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
@@ -211,7 +135,7 @@ var map = L.map('map', {
             minZoom: 15,
             maxZoom: 17,
             tms: false,
-            attribution: 'Created by Parker Otto (2024) using QGIS.  2023 Street Centerlines, 2016 Chicago Park District Boundaries, 2012 Waterways, and 2023 Community Area Boundaries from the Chicago Data Portal.'
+            attribution: 'Created by Parker Otto (2024) using QGIS.  2024 Street Centerlines, 2016 Chicago Park District Boundaries, 2012 Waterways, and 2024 Community Area Boundaries from the Chicago Data Portal.'
         }).addTo(map);
 
         var imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -220,13 +144,15 @@ var map = L.map('map', {
 
 //Color Coding, This may be the same for all maps and can be reused
 
-function getZoningColor(fudgeZone) {
-                switch (fudgeZone) {
-                    case 'Business and Commercial' : return 'orange';
-                    case 'Planned Development' : return 'maroon';
-                    case 'Multi-Family Residential' : return 'purple';
-                    case 'Single-Family Residential' : return 'yellow';
-                    case 'Open Space' : return 'lime';
+function getZoningColor(fudgezone) {
+                switch (fudgezone) {
+                    case 'Business & Commercial' : return '#fbb4ae';
+                    case 'Planned Development' : return '#b3cde3';
+                    case 'Multi-Family Residential' : return '#decbe4';
+                    case 'Single-Family Residential' : return '#fed9a6';
+                    case 'Townhome Residential' : return '#e5d8bd'
+                    case 'Planned Open Space' : return '#ccebc5';
+                    case 'Manufacturing' : return '#fdc086';
                     default : return 'gray';
                 }
             };
@@ -474,11 +400,11 @@ function getZoningColor(fudgeZone) {
 
             function zoningColor(feature){
                 return {
-                    fillColor: getZoningColor(feature.properties.fudgeZone),
+                    fillColor: getZoningColor(feature.properties.fudgezone),
                     weight: 2,
                     opacity: 1,
                     color: 'black',
-                    fillOpacity: 0.4
+                    fillOpacity: 0.8
                 }
             };
             
@@ -489,7 +415,7 @@ var zoningOEF = function (feature, layer) {
                     var prop = feature.properties;
                     var popup1 =
                         '<h3>Zoning</h3>' +
-                        prop['fudgeZone']
+                        prop['fudgezone']
                         + '<br><br><small><i>Zoning Class: ' + prop['zone_class'] +'</i></small>'
                         + '<br><small><i>Zoning Type: ' + prop['zone_type'] + '</i></small>';
 
@@ -667,12 +593,153 @@ var footprints = new L.geoJson(r20wl,
                 }
             );
 
-            var zoningMap = new L.geoJson(zoning,
+            var zoningMap = new L.geoJson(r20wl2024zoning,
                 {
                     style: zoningColor,
                     onEachFeature: zoningOEF
                 }
             );
+
+            function updateLegend() {
+            var tableContent = "";
+            if (document.getElementById('classified-footprints').checked) {
+                tableContent = `
+                <table>
+                    <tr>
+                        <td>Church</td>
+                        <td><span class="legend-colorBox" style="background-color: #9fed18;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Garage</td>
+                        <td><span class="legend-colorBox" style="background-color: #006400;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Theater</td>
+                        <td><span class="legend-colorBox" style="background-color: #FF0000;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Transit</td>
+                        <td><span class="legend-colorBox" style="background-color: #000000;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Dwelling</td>
+                        <td><span class="legend-colorBox" style="background-color: #987db7;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Hotel</td>
+                        <td><span class="legend-colorBox" style="background-color: #efc866;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Industrial</td>
+                        <td><span class="legend-colorBox" style="background-color: #00e9fe;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Institution</td>
+                        <td><span class="legend-colorBox" style="background-color: #ff8fd6;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Store</td>
+                        <td><span class="legend-colorBox" style="background-color: #d9615b;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Flat</td>
+                        <td><span class="legend-colorBox" style="background-color: #3596ce;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>UChicago</td>
+                        <td><span class="legend-colorBox" style="background-color: #800000;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Default</td>
+                        <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
+                    </tr>
+                </table>`;
+            }
+
+ //           if (document.getElementById('building-height').checked) {
+   //             tableContent = `
+     //           <table>
+       //             <tr>
+         //               <td>7+ Stories</td>
+           //             <td><span class="legend-colorBox" style="background-color: #810f7c;"></span></td>
+             //       </tr>
+               //     <tr>
+ //                       <td>4 - 6.5 Stories</td>
+   //                     <td><span class="legend-colorBox" style="background-color: #8856a7;"></span></td>
+     //               </tr>
+       //             <tr>
+         //               <td>3 - 3.5 Stories</td>
+           //             <td><span class="legend-colorBox" style="background-color: #8c96c6;"></span></td>
+             //       </tr>
+               //     <tr>
+                 //       <td>1.5 - 2.5 Stories</td>
+                   //     <td><span class="legend-colorBox" style="background-color: #b3cde3;"></span></td>
+  //                  </tr>
+    //                <tr>
+      //                  <td>1 Story</td>
+        //                <td><span class="legend-colorBox" style="background-color: #edf8fb;"></span></td>
+          //          </tr>
+            //    </table>`;
+        //    }
+
+ //           if (document.getElementById('building-material').checked) {
+   //             tableContent = `
+     //           <table>
+       //             <tr>
+         //               <td>Brick (B)</td>
+          //              <td><span class="legend-colorBox" style="background-color: #eaa2b6;"></span></td>
+           //         </tr>
+            //        <tr>
+             //           <td>Wood (W)</td>
+              //          <td><span class="legend-colorBox" style="background-color: #D7D773;"></span></td>
+           //         </tr>
+             //       <tr>
+               //         <td>Stone (S)</td>
+                 //       <td><span class="legend-colorBox" style="background-color: #6797C2;"></span></td>
+   //                 </tr>
+     //               <tr>
+       //                 <td>Fireproof Construction (F)</td>
+         //               <td><span class="legend-colorBox" style="background-color: #96804f;"></span></td>
+           //         </tr>
+             //   </table>`;
+           // }
+
+            if (document.getElementById('2024-zoning-map').checked) {
+                tableContent = `
+                <table>
+                    <tr>
+                        <td>Business & Commercial (B & C)</td>
+                        <td><span class="legend-colorBox" style="background-color: #b3cde3;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Planned Development (PD)</td>
+                        <td><span class="legend-colorBox" style="background-color: #b3cde3;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Multi-Family Residential (RM)</td>
+                        <td><span class="legend-colorBox" style="background-color: #decbe4;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Single-Family Residential (RS)</td>
+                        <td><span class="legend-colorBox" style="background-color: #fed9a6;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Townhome Residential (RT)</td>
+                        <td><span class="legend-colorBox" style="background-color: #e5d8bd;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Manufacturing (M)</td>
+                        <td><span class="legend-colorBox" style="background-color: #fdc086;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Planned Open Space (POS)</td>
+                        <td><span class="legend-colorBox" style="background-color: #ccebc5;"></span></td>
+                    </tr>
+                </table>`;
+            }
+            var legendTable = document.getElementById('legend-table');
+            legendTable.innerHTML = tableContent;
+        };
 
 //The following is different from line 460 on in Hyde Park r20 maps
 function switchBaseLayer(layer) {
@@ -688,7 +755,7 @@ function switchBaseLayer(layer) {
             'Blank Footprints': satFootprints,
             'Classified Footprints': classifiedFootprints,
             'Satellite Footprints': satFootprints,
-          "2023 Zoning Map" : zoningMap,
+            "2024 Zoning Map" : zoningMap,
             'Churches': churchFootprints,
             'Theaters': theaterFootprints,
             'Garages': garageFootprints,
@@ -711,6 +778,7 @@ function switchBaseLayer(layer) {
                 } else {
                     map.removeLayer(layer);
                 }
+                updateLegend()
             });
         });
 
@@ -743,6 +811,32 @@ function switchBaseLayer(layer) {
             });
         });
         
+        var basemaps = {
+                "Default": tilesource_layer,
+                "Satellite": imagery
+            };
+
+            var overlaymaps = {
+                "Blank Footprints": footprints,
+                "Satellite Footprints": satFootprints,
+                "2024 Zoning Map" : zoningMap,
+                "Classified Footprints": classifiedFootprints,
+                "Churches" : churchFootprints,
+                'Theaters': theaterFootprints,
+                'Garages': garageFootprints,
+                'Transit': transitFootprints,
+                "Hotels" : hotelFootprints,
+                "Industrial" : industrialFootprints,
+                "Institutional" : institutionalFootprints,
+                "UChicago" : uchicagoFootprints,
+                "Stores" : storeFootprints,
+                "Flats" : flatFootprints,
+                "Dwellings" : dwellingFootprints
+            };
+        L.control.layers(
+                basemaps, overlaymaps, {collapsed:true}).addTo(map);
+                updateLegend();
+                
     </script>
 
 </body>
