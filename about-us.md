@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Who We Are
-image: assets/images/hp-image.jpg
+image: assets/images/olduchicago.jpg
 nav-menu: true
 ---
 
