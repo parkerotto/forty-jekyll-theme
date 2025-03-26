@@ -25,6 +25,7 @@
     padding: 1rem;
     box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.3);
     order: 1;
+    overflow: auto;
 }
 
 .legend-item-container {
@@ -34,7 +35,6 @@
 }
 
 .location-metadata {
-overflow: auto;
 height: 300px;
 }
 input[type="checkbox"], input[type="radio"] {
@@ -179,6 +179,7 @@ padding: 0.5em;
         height: 50vh;
         padding: 1rem;
         box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.3);
+        overflow: auto;
     }
 
     .custom-layer-control {
