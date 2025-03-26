@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Who We Are
-image: assets/images/southside.jpg
+image: assets/images/hp-image.jpg
 nav-menu: true
 ---
 
