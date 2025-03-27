@@ -138,9 +138,9 @@ var map = L.map('map', {
         }).setView([41.794, -87.5948], 16);
         L.control.attribution({prefix: false}).addTo(map);
 
-        var tilesource_layer = L.tileLayer('https://parkerotto.github.io/R20/xyz/{z}/{x}/{y}.png', {
-            minZoom: 15,
-            maxZoom: 18,
+        var tilesource_layer = L.tileLayer('https://parkerotto.github.io/chibwbasemap/bwbasemapxyz/{z}/{x}/{y}.png', {
+            minZoom: 12,
+            maxZoom: 19,
             tms: false,
             attribution: 'Created by Parker Otto (2024) using QGIS.  2024 Street Centerlines, 2016 Chicago Park District Boundaries, 2012 Waterways, and 2024 Community Area Boundaries from the Chicago Data Portal.'
         }).addTo(map);
