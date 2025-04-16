@@ -2,7 +2,7 @@
 title: The Maps
 layout: allmaps
 description: 'Explore our neighborhood maps'
-image: assets/images/southside.jpg
+image: assets/images/hydepark.jpg
 nav-menu: true
 show_tile: true
 ---
