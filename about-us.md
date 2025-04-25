@@ -38,7 +38,7 @@ nav-menu: true
 <h2 id="content">Student Workers</h2>
 <p>The Roaring 20s Project would not be possible without the fantastic work of its student research assistants.  Our Spring 2025 Cohort includes Dave Rotblatt, Griggs Fuller, Hannah Chen, Sophia Liu, Yixin Chen, and Ana Estipuinan.</p>
 
-<img src="assets/images/cdslogo.png"
+<img src="assets/images/cdslogohorizontal.png"
      alt="CDS Logo"
      style="float: left;" />
 <h2 id="content">UChicago Library Center for Digital Scholarship</h2>
