@@ -1,8 +1,8 @@
 ---
-title: Woodlawn Map
+title: Oakland Map
 layout: maps
-description: 'An interactive map of Woodlawn in 1926'
-image: assets/images/woodlawn.jpg
+description: 'An interactive map of Oakland in 1912-25'
+image: assets/images/hydepark.jpg
 nav-menu: false
 show_tile: false
 is_map: true
@@ -10,7 +10,6 @@ is_map: true
 
 <!DOCTYPE html>
 <html>
-<!--This controls the layer banner at the top of the map !-->
     <div class="custom-layer-control" id="overlay-controls">
         <div class="dropdown">
             <button class="dropbtn">Satellite Overlay</button>
@@ -30,8 +29,12 @@ is_map: true
             <div class="dropdown-content">
                 <div>
                     <input type="checkbox" id="blank-footprints">
-                    <label for="blank-footprints">Satellite Footprints</label>
+                    <label for="blank-footprints">Blank Footprints</label>
                   </div>
+                <div>
+                    <input type="checkbox" id="sat-footprints">
+                    <label for="sat-footprints">Satellite Footprints</label>
+                </div>
             <div>
                     <input type="checkbox" id="classified-footprints" checked>
                     <label for="classified-footprints">Classified Footprints</label>
@@ -42,11 +45,28 @@ is_map: true
                   </div>
                 </div>
             </div>
+            <div class="dropdown">
+                <button class="dropbtn">Choropleth Maps</button>
+                <div class="dropdown-content">
+                    <div>
+                        <input type="checkbox" id="building-height">
+                        <label for="building-height">Building Height</label>
+                      </div>
+                      <div>
+                        <input type="checkbox" id="building-material">
+                        <label for="building-material">Building Material</label>
+                      </div>
+                    </div>
+                </div>
                 <div class="dropdown">
                     <button class="dropbtn">Filters</button>
                     <div class="dropdown-content">
                       <div>
-                          <div>
+                        <div>
+                            <input type="checkbox" id="named">
+                            <label for="named">Named</label>
+                        </div>
+                              <div>
                               <input type="checkbox" id="churches">
                               <label for="churches">Churches</label>
                           </div>
@@ -87,6 +107,14 @@ is_map: true
                               <label for="flats">Flats</label>
                           </div>
                           <div>
+                            <input type="checkbox" id="gas">
+                            <label for="gas">Filling Stations</label>
+                          </div>
+                          <div>
+                            <input type="checkbox" id="offices">
+                            <label for="offices">Offices</label>
+                          </div>
+                          <div>
                               <input type="checkbox" id="dwellings">
                               <label for="dwellings">Dwellings</label>
                           </div>
@@ -94,43 +122,35 @@ is_map: true
         </div>
     </div>
     </div>
-<!--More information about Section ID "one" can be found in components> section.scss AND skel.scss AND in the maps template !-->
-
 <section id="one" class="section-map">
-<!--More information about sidebar can be found in maps template !-->
-<div id="map"></div>	
-
+    
+    <div id="map"></div>
     <div id="sidebar">
-        <h2>Woodlawn</h2>
-<!--More information about legend can be found in maps template !-->
-<details class="legend">
-    <summary><b>Legend</b></summary>
-    <span id='legend-table'></span>
-</details>
+        <h2>Oakland</h2>
+        <h3>Created by Yixin Chen</h3>
+        <details class="legend">
+            <summary><b>Legend</b></summary>
+            <span id='legend-table'></span>
+        </details>
 <br>
-<!--More information about location box can be found in maps template !-->
-
 <h3>Location Information</h3>
         <div id="location-data" class="location-metadata">
             <p>
-                Here you will find information on what Woodlawn looked like in the 1926. <br><br>Click on a building to explore the data! <br><br>NOTE: The "Classified Footprints" (found under Building Usage/Zone) MUST be toggled off for filters to work.
+                Here you will find information on what Oakland looked like in the 1910s-20s.  (1912 north of Pershing; 1925 south of Pershing). <br><br>Click on a building to explore the data! <br><br>NOTE: The "Classified Footprints" (found under Building Usage/Zone) MUST be toggled off for filters to work.
             </p>
         </div>
-    </div>
+    </div>	
 </section>
-<!--Calling Scripts !-->
 
-<script src="https://parkerotto.github.io/R20/R20WL/r20wl.js"></script>
+<script src="jsons/R20_Oakland.js"></script>
 
-<script src="jsons/r20wl2024zoning.js"></script>
+<script src="jsons/hpzoning2024.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-
-//Creating Map
 var map = L.map('map', {
             attributionControl: false
-        }).setView([41.7803, -87.6059], 16);
+        }).setView([41.823194, -87.606846], 16);
         L.control.attribution({prefix: false}).addTo(map);
 
         var tilesource_layer = L.tileLayer('https://parkerotto.github.io/chibwbasemap/newbasemapxyz/{z}/{x}/{y}.png', {
@@ -144,121 +164,156 @@ var map = L.map('map', {
             attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
         });
 
-//Color Coding, This may be the same for all maps and can be reused
-
-function getZoningColor(fudgezone) {
-                switch (fudgezone) {
-                    case 'Business & Commercial' : return '#fbb4ae';
-                    case 'Planned Development' : return '#b3cde3';
-                    case 'Multi-Family Residential' : return '#decbe4';
-                    case 'Single-Family Residential' : return '#fed9a6';
-                    case 'Townhome Residential' : return '#e5d8bd'
-                    case 'Planned Open Space' : return '#ccebc5';
-                    case 'Manufacturing' : return '#fdc086';
+            function getZoningColor(zone_class) {
+                switch (zone_class) {
+                    case 'B' : return '#fbb4ae';
+                    case 'PD' : return '#b3cde3';
+                    case 'RM' : return '#decbe4';
+                    case 'RS' : return '#fed9a6';
+                    case 'RT' : return '#e5d8bd';
+                    case 'T' : return '#fdc086';
+                    case 'POS' : return '#ccebc5';
                     default : return 'gray';
                 }
             };
-            function getColorByUse(Uses) {
-                switch (Uses) {
-                    case 'Church' : return '#9fed18'; // Lime
-                    case 'Dwelling' : return '#987db7'; // Lavender
-                    case 'Hotel' : return '#efc866'; // Yellow
-                    case 'Industrial' : return '#00e9fe'; // Light Blue
-                    case 'Institutional' : return '#ff8fd6'; // Pink
-                    case 'Store' : return '#d9615b'; // Burnt Siena
-                    case 'Flat' : return '#3596ce'; // Blue
-                    case 'UChicago' : return '#800000'; // Maroon
-                    case 'Theater' : return '#FF0000'; //Red
-                    case 'Garage' : return '#006400'; // Green
-                    case 'Transit' : return '#000000'; //Black
+
+            function getMaterialColor(material) {
+                switch (material) {
+                    case 'W' : return '#D7D773';
+                    case 'B' : return '#eaa2b6';
+                    case 'F' : return '#96804f';
+                    case 'S' : return '#6797C2';
+                    default : return 'gray';
+                }
+            };
+
+            function getColorByUse(use) {
+                switch (use) {
+                    case 'C' : return '#9fed18'; // Lime
+                    case 'D' : return '#987db7'; // Lavender
+                    case 'H' : return '#efc866'; // Yellow
+                    case 'M' : return '#00e9fe'; // Light Blue
+                    case 'I' : return '#ff8fd6'; // Pink
+                    case 'S' : return '#d9615b'; // Burnt Siena
+                    case 'F' : return '#3596ce'; // Blue
+                    case 'U' : return '#800000'; // Maroon
+                    case 'T' : return '#FF0000'; //Red
+                    case 'G' : return '#006400'; // Green
+                    case 'R' : return '#000000'; //Black
+                    case 'O' : return '#FF00FF'; //Fuchsia
+                    case 'A' : return '#FFA500'; //Orange
+                    case 'V' : return '#808080'; 
+                    case 'N' : return '#808080';
                     default : return '#808080'; // Gray
                 }
             };
 
-            function getTheaterStyle(Uses) {
-                switch (Uses) {
-                    case 'Theater' : return '#FF0000'; 
+            function getColor(value) {
+                return value >6.9 ? '#810f7c':
+                    value > 3.4 ? '#8856a7': 
+                    value > 2.4 ? '#8c96c6': 
+                    value > 1.4 ? '#b3cde3': 
+                    value > 0 ? '#edf8fb': 
+                    '#ffffff';
+            };
+
+            function getNameStyle(Name) {
+                switch (Name) {
+                    case null : return 'transparent';
+                    default : return '#FF0000';
+                }
+            };
+
+            function getChurchStyle(use) {
+                switch (use) {
+                    case 'C' : return '#9fed18';
+                    default : return 'transparent';
+                }
+            };
+
+            function getTheaterStyle(use) {
+                switch (use) {
+                    case 'T' : return '#FF0000'; 
                     default: return 'transparent';
                 }
             };
 
-            function getGarageStyle(Uses) {
-                switch (Uses) {
-                    case 'Garage' : return '#006400'; 
+            function getGarageStyle(use) {
+                switch (use) {
+                    case 'G' : return '#006400'; 
                     default: return 'transparent';
                 }
             };
 
-            function getTransitStyle(Uses) {
-                switch (Uses) {
-                    case 'Transit' : return '#000000'; //PLACEHOLDER COLOR
+            function getTransitStyle(use) {
+                switch (use) {
+                    case 'T' : return '#000000'; //PLACEHOLDER COLOR
                     default: return 'transparent';
+                }
+            };
+
+            function getDwellingStyle(use) {
+                switch (use) {
+                    case 'D' : return '#987db7';
+                    default : return 'transparent';
+                }
+            };
+
+            function getHotelStyle(use) {
+                switch (use) {
+                    case 'H' : return '#efc866';
+                    default : return 'transparent';
+                }
+            };
+
+            function getIndustrialStyle(use) {
+                switch (use) {
+                    case 'M' : return '#00e9fe';
+                    default : return 'transparent';
                 }
             };
             
-            function getChurchStyle(Uses) {
-                switch (Uses) {
-                    case 'Church' : return '#9fed18';
+            function getInstitutionalStyle(use) {
+                switch (use) {
+                    case 'I' : return '#ff8fd6'; // Pink
                     default : return 'transparent';
                 }
             };
 
-            function getDwellingStyle(Uses) {
-                switch (Uses) {
-                    case 'Dwelling' : return '#987db7';
+            function getStoreStyle(use) {
+                switch (use) {
+                    case 'S' : return '#d9615b'; // Burnt Siena
                     default : return 'transparent';
                 }
             };
 
-            function getHotelStyle(Uses) {
-                switch (Uses) {
-                    case 'Hotel' : return '#efc866';
+            function getFlatStyle(use) {
+                switch (use) {
+                    case 'F' : return '#3596ce'; // Blue
                     default : return 'transparent';
                 }
             };
 
-            function getIndustrialStyle(Uses) {
-                switch (Uses) {
-                    case 'Industrial' : return '#00e9fe';
-                    default : return 'transparent';
-                }
-            };
-            
-            function getInstitutionalStyle(Uses) {
-                switch (Uses) {
-                    case 'Institutional' : return '#ff8fd6'; // Pink
-                    default : return 'transparent';
-                }
-            };
-
-            function getStoreStyle(Uses) {
-                switch (Uses) {
-                    case 'Store' : return '#d9615b'; // Burnt Siena
-                    default : return 'transparent';
-                }
-            };
-
-            function getFlatStyle(Uses) {
-                switch (Uses) {
-                    case 'Flat' : return '#3596ce'; // Blue
-                    default : return 'transparent';
-                }
-            };
-
-            function getUchicagoStyle(Uses) {
-                switch (Uses) {
-                    case 'UChicago' : return '#800000'; // Maroon
+            function getUchicagoStyle(use) {
+                switch (use) {
+                    case 'U' : return '#800000'; // Maroon
                     default : return 'transparent'; // Gray
                 }
             };
 
-       //     function getFillOpacityByUse(use) {
-     //           switch (use) {
-     //               case 'Church': return 0.5;
-   //                 case 'Flat': return 0.9;
-   //                 default: return 0.7;
-   //             }
-  //          };
+            function getOfficeStyle(use) {
+                switch (use) {
+                    case 'O' : return '#FF00FF'; //Fuchsia
+                    default : return 'transparent'; 
+                }
+            };
+
+            function getGasStyle(use) {
+                switch (use) {
+                    case 'A' : return '#FFA500'; //Orange
+                    default : return 'transparent';
+                }
+            };
 
             function style(feature){
                 return {
@@ -280,9 +335,49 @@ function getZoningColor(fudgezone) {
                 }
             };
 
+            function nameStyle(feature){
+                return {
+                    fillColor: getNameStyle(feature.properties.Name),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function materialStyle(feature){
+                return {
+                    fillColor: getMaterialColor(feature.properties.Material),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+            
+            function officeStyle(feature){
+                return {
+                    fillColor: getOfficeStyle(feature.properties.Use),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function gasStyle(feature){
+                return {
+                    fillColor: getGasStyle(feature.properties.Use),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
             function transitStyle(feature){
                 return {
-                    fillColor: getTransitStyle(feature.properties.Uses),
+                    fillColor: getTransitStyle(feature.properties.Use),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -292,7 +387,7 @@ function getZoningColor(fudgezone) {
 
             function garageStyle(feature){
                 return {
-                    fillColor: getGarageStyle(feature.properties.Uses),
+                    fillColor: getGarageStyle(feature.properties.Use),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -302,7 +397,7 @@ function getZoningColor(fudgezone) {
 
             function theaterStyle(feature){
                 return {
-                    fillColor: getTheaterStyle(feature.properties.Uses),
+                    fillColor: getTheaterStyle(feature.properties.Use),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -312,7 +407,7 @@ function getZoningColor(fudgezone) {
 
             function churchStyle(feature){
                 return {
-                    fillColor: getChurchStyle(feature.properties.Uses),
+                    fillColor: getChurchStyle(feature.properties.Use),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -322,7 +417,7 @@ function getZoningColor(fudgezone) {
 
             function dwellingStyle(feature){
                 return {
-                    fillColor: getDwellingStyle(feature.properties.Uses),
+                    fillColor: getDwellingStyle(feature.properties.Use),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -332,7 +427,7 @@ function getZoningColor(fudgezone) {
 
             function hotelStyle(feature){
                 return {
-                    fillColor: getHotelStyle(feature.properties.Uses),
+                    fillColor: getHotelStyle(feature.properties.Use),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -342,7 +437,7 @@ function getZoningColor(fudgezone) {
 
             function industrialStyle(feature){
                 return {
-                    fillColor: getIndustrialStyle(feature.properties.Uses),
+                    fillColor: getIndustrialStyle(feature.properties.Use),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -352,7 +447,7 @@ function getZoningColor(fudgezone) {
 
             function institutionalStyle(feature){
                 return {
-                    fillColor: getInstitutionalStyle(feature.properties.Uses),
+                    fillColor: getInstitutionalStyle(feature.properties.Use),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -362,7 +457,7 @@ function getZoningColor(fudgezone) {
 
             function storeStyle(feature){
                 return {
-                    fillColor: getStoreStyle(feature.properties.Uses),
+                    fillColor: getStoreStyle(feature.properties.Use),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -372,7 +467,7 @@ function getZoningColor(fudgezone) {
 
             function flatStyle(feature){
                 return {
-                    fillColor: getFlatStyle(feature.properties.Uses),
+                    fillColor: getFlatStyle(feature.properties.Use),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -382,7 +477,7 @@ function getZoningColor(fudgezone) {
 
             function uchicagoStyle(feature){
                 return {
-                    fillColor: getUchicagoStyle(feature.properties.Uses),
+                    fillColor: getUchicagoStyle(feature.properties.Use),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -392,7 +487,7 @@ function getZoningColor(fudgezone) {
 
             function customStyle(feature) {
                 return {
-                    fillColor: getColorByUse(feature.properties.Uses),
+                    fillColor: getColorByUse(feature.properties.Use),
                     weight: 1,
                     opacity: 1,
                     color: 'black',
@@ -400,29 +495,32 @@ function getZoningColor(fudgezone) {
                 }
             };
 
+            function heightStyle(feature) {
+                return{
+                    fillColor: getColor(feature.properties.Height),
+                    weight: 1,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
             function zoningColor(feature){
                 return {
-                    fillColor: getZoningColor(feature.properties.fudgezone),
+                    fillColor: getZoningColor(feature.properties.zone_class),
                     weight: 2,
                     opacity: 1,
                     color: 'black',
-                    fillOpacity: 0.8
+                    fillOpacity: 0.6
                 }
             };
             
-//Pop-ups to append to sidebar, will need to be added to original GitHub code found on Parker's GitHub to adapt functionality
-
 var zoningOEF = function (feature, layer) {
                 if (feature.properties) {
                     var prop = feature.properties;
                     var popup1 =
                         '<h3>Zoning</h3>' +
-                        prop['fudgezone']
-                        + '<br><br><small><i>Zoning Class: ' + prop['zone_class'] +'</i></small>'
-                        + '<br><small><i>Zoning Type: ' + prop['zone_type'] + '</i></small>';
-
-//Specific place for On Click functionality
-
+                        prop['zone_class'];
                     feature.layer = layer;
                     layer.on('click', function (){
   document.getElementById('location-data').innerHTML = `${popup1}`
@@ -431,17 +529,50 @@ var zoningOEF = function (feature, layer) {
                 }
             };
 
+            var materialLookup = {
+                'B': 'Brick',
+                'S': 'Stone',
+                'F': 'Fireproof Construction',
+                'W': 'Wood',
+                'O': 'Other'
+            };
+
+            var useLookup = {
+                'F': 'Flat',
+                'S': 'Store',
+                'D': 'Dwelling',
+                'H': 'Hotel',
+                'G': 'Garage',
+                'T': 'Theater',
+                'C': 'Religious',
+                'I': 'Institutional',
+                'O': 'Office',
+                'U': 'School',
+                'A': 'Filling Station',
+                'R': 'Railroad',
+                'M': 'Industrial',
+                'V': 'Vacant',
+                'N': 'Other/No Use'
+            };
+
             var onEachFeature = function (feature, layer) {
                 if (feature.properties) {
                     var prop = feature.properties;
+                    var materialFull = materialLookup[prop['Material']] || prop['Material'];
+                    var useFull = useLookup[prop['Use']] || prop['Use'];
+                    var use2Full = useLookup[prop['Use2']] || prop['Use2'];
                     var popup =
                         '<h4>Sanborn Fire Insurance Data</h4>' +
                         '<b>Sanborn: </b>' + prop['Sanborn'] +
-                        '<br><b>Footprint Area: </b>' + prop['area'] + ' m<sup>2</sup>' +
-                        '<br><b>Footprint Year: </b>' + prop['Year'] +
-                        '<br><b>Use: </b>' + prop['Uses'] +
+                        '<br><b>Footprint Area: </b>' + prop['Area'] + ' m<sup>2</sup>' +
+                        '<br><b>Footprint Year: </b>' + prop['Date'] +
+                        '<br><b>Use: </b>' + useFull +
+                        '<br><b>Secondary Use: </b>' + use2Full +
+                        '<br><b>Height: </b>' + prop['Height'] + ' Stories' + 
+                        '<br><b>Primary Material: </b>' + materialFull + 
+                        '<br><b>Building Name (If Applicable): </b>' + prop['Name'] + 
+                        '<br><b>Notes: </b>' + prop['Notes'] +
                         '<br><br><small>Coordinates: <i>' + prop['lat'] + ', ' + prop['long'] + '</i></small>';
-//Specific place for On Click functionality
 
                     feature.layer = layer;
                     
@@ -450,7 +581,6 @@ layer.on('click', function (){
   
 });
                   
-//Taken from Parker's original code
 
                     layer.on('click', function () {
                     if (!layer.halo) {
@@ -495,107 +625,140 @@ layer.on('click', function (){
                 );
                 }
             };
-
-//Will need to be adapted for each map
-var footprints = new L.geoJson(r20wl, 
+var footprints = new L.geoJson(R20_Oakland, 
                 {
                     style : style,
                     onEachFeature : onEachFeature
                 }
             );
 
-            var satFootprints = new L.geoJson(r20wl, 
+            var satFootprints = new L.geoJson(R20_Oakland, 
                 {
                     style : satStyle,
                     onEachFeature : onEachFeature
                 }
             );
 
-            var classifiedFootprints = new L.geoJson(r20wl, 
+            var classifiedFootprints = new L.geoJson(R20_Oakland, 
                 {
                     style : customStyle,
                     onEachFeature : onEachFeature
                 }
             ).addTo(map);
 
-            var churchFootprints = new L.geoJson(r20wl,
+            var heightFootprints = new L.geoJson(R20_Oakland,
+                {
+                    style : heightStyle,
+                    onEachFeature : onEachFeature
+                }
+            );
+
+            var materialFootprints = new L.geoJson(R20_Oakland,
+                {
+                    style : materialStyle,
+                    onEachFeature : onEachFeature
+                }
+            );
+
+            var nameFootprints = new L.geoJson(R20_Oakland,
+                {
+                    style : nameStyle,
+                    onEachFeature : onEachFeature
+                }
+            );
+
+            var churchFootprints = new L.geoJson(R20_Oakland,
                 {
                     style : churchStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var theaterFootprints = new L.geoJson(r20wl,
+            var theaterFootprints = new L.geoJson(R20_Oakland,
                 {
                     style : theaterStyle,
+                    onEachFeature : onEachFeature
+                }
+            );
+
+            var officeFootprints = new L.geoJson(R20_Oakland,
+                {
+                    style : officeStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var garageFootprints = new L.geoJson(r20wl,
+            var gasFootprints = new L.geoJson(R20_Oakland,
+                {
+                    style : gasStyle,
+                    onEachFeature : onEachFeature
+                }
+            );
+
+            var garageFootprints = new L.geoJson(R20_Oakland,
                 {
                     style : garageStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var transitFootprints = new L.geoJson(r20wl,
+            var transitFootprints = new L.geoJson(R20_Oakland,
                 {
                     style : transitStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var dwellingFootprints = new L.geoJson(r20wl,
+            var dwellingFootprints = new L.geoJson(R20_Oakland,
                 {
                     style : dwellingStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var hotelFootprints = new L.geoJson(r20wl,
+            var hotelFootprints = new L.geoJson(R20_Oakland,
                 {
                     style : hotelStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var industrialFootprints = new L.geoJson(r20wl,
+            var industrialFootprints = new L.geoJson(R20_Oakland,
                 {
                     style : industrialStyle,
                     onEachFeature: onEachFeature
                 }
             );
     
-            var institutionalFootprints = new L.geoJson(r20wl,
+            var institutionalFootprints = new L.geoJson(R20_Oakland,
                 {
                     style : institutionalStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var storeFootprints = new L.geoJson(r20wl,
+            var storeFootprints = new L.geoJson(R20_Oakland,
                 {
                     style : storeStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var flatFootprints = new L.geoJson(r20wl,
+            var flatFootprints = new L.geoJson(R20_Oakland,
                 {
                     style : flatStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var uchicagoFootprints = new L.geoJson(r20wl,
+            var uchicagoFootprints = new L.geoJson(R20_Oakland,
                 {
                     style : uchicagoStyle,
                     onEachFeature: onEachFeature
                 }
             );
 
-            var zoningMap = new L.geoJson(r20wl2024zoning,
+            var zoningMap = new L.geoJson(hpZoning2024,
                 {
                     style: zoningColor,
                     onEachFeature: zoningOEF
@@ -648,63 +811,71 @@ var footprints = new L.geoJson(r20wl,
                         <td><span class="legend-colorBox" style="background-color: #3596ce;"></span></td>
                     </tr>
                     <tr>
-                        <td>UChicago</td>
+                        <td>School</td>
                         <td><span class="legend-colorBox" style="background-color: #800000;"></span></td>
                     </tr>
                     <tr>
-                        <td>Default</td>
+                        <td>Office</td>
+                        <td><span class="legend-colorBox" style="background-color: #FF00FF;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Filling Station</td>
+                        <td><span class="legend-colorBox" style="background-color: #FFA500;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Other / No Use / Vacant</td>
                         <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
                     </tr>
                 </table>`;
             }
 
- //           if (document.getElementById('building-height').checked) {
-   //             tableContent = `
-     //           <table>
-       //             <tr>
-         //               <td>7+ Stories</td>
-           //             <td><span class="legend-colorBox" style="background-color: #810f7c;"></span></td>
-             //       </tr>
-               //     <tr>
- //                       <td>4 - 6.5 Stories</td>
-   //                     <td><span class="legend-colorBox" style="background-color: #8856a7;"></span></td>
-     //               </tr>
-       //             <tr>
-         //               <td>3 - 3.5 Stories</td>
-           //             <td><span class="legend-colorBox" style="background-color: #8c96c6;"></span></td>
-             //       </tr>
-               //     <tr>
-                 //       <td>1.5 - 2.5 Stories</td>
-                   //     <td><span class="legend-colorBox" style="background-color: #b3cde3;"></span></td>
-  //                  </tr>
-    //                <tr>
-      //                  <td>1 Story</td>
-        //                <td><span class="legend-colorBox" style="background-color: #edf8fb;"></span></td>
-          //          </tr>
-            //    </table>`;
-        //    }
+            if (document.getElementById('building-height').checked) {
+                tableContent = `
+                <table>
+                    <tr>
+                        <td>7+ Stories</td>
+                        <td><span class="legend-colorBox" style="background-color: #810f7c;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>4 - 6.5 Stories</td>
+                        <td><span class="legend-colorBox" style="background-color: #8856a7;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>3 - 3.5 Stories</td>
+                        <td><span class="legend-colorBox" style="background-color: #8c96c6;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>1.5 - 2.5 Stories</td>
+                        <td><span class="legend-colorBox" style="background-color: #b3cde3;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>1 Story</td>
+                        <td><span class="legend-colorBox" style="background-color: #edf8fb;"></span></td>
+                    </tr>
+                </table>`;
+            }
 
- //           if (document.getElementById('building-material').checked) {
-   //             tableContent = `
-     //           <table>
-       //             <tr>
-         //               <td>Brick (B)</td>
-          //              <td><span class="legend-colorBox" style="background-color: #eaa2b6;"></span></td>
-           //         </tr>
-            //        <tr>
-             //           <td>Wood (W)</td>
-              //          <td><span class="legend-colorBox" style="background-color: #D7D773;"></span></td>
-           //         </tr>
-             //       <tr>
-               //         <td>Stone (S)</td>
-                 //       <td><span class="legend-colorBox" style="background-color: #6797C2;"></span></td>
-   //                 </tr>
-     //               <tr>
-       //                 <td>Fireproof Construction (F)</td>
-         //               <td><span class="legend-colorBox" style="background-color: #96804f;"></span></td>
-           //         </tr>
-             //   </table>`;
-           // }
+            if (document.getElementById('building-material').checked) {
+                tableContent = `
+                <table>
+                    <tr>
+                        <td>Brick (B)</td>
+                        <td><span class="legend-colorBox" style="background-color: #eaa2b6;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Wood (W)</td>
+                        <td><span class="legend-colorBox" style="background-color: #D7D773;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Stone (S)</td>
+                        <td><span class="legend-colorBox" style="background-color: #6797C2;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Fireproof Construction (F)</td>
+                        <td><span class="legend-colorBox" style="background-color: #96804f;"></span></td>
+                    </tr>
+                </table>`;
+            }
 
             if (document.getElementById('2024-zoning-map').checked) {
                 tableContent = `
@@ -730,7 +901,7 @@ var footprints = new L.geoJson(r20wl,
                         <td><span class="legend-colorBox" style="background-color: #e5d8bd;"></span></td>
                     </tr>
                     <tr>
-                        <td>Manufacturing (M)</td>
+                        <td>Transportation (T)</td>
                         <td><span class="legend-colorBox" style="background-color: #fdc086;"></span></td>
                     </tr>
                     <tr>
@@ -743,7 +914,6 @@ var footprints = new L.geoJson(r20wl,
             legendTable.innerHTML = tableContent;
         };
 
-//The following is different from line 460 on in Hyde Park r20 maps
 function switchBaseLayer(layer) {
             map.eachLayer(function(lyr) {
                 if (lyr !== layer) {
@@ -754,10 +924,13 @@ function switchBaseLayer(layer) {
         } 
         // Manage layers based on checkbox state
         var overlayLayers = {
-            'Blank Footprints': satFootprints,
+            'Blank Footprints': footprints,
             'Classified Footprints': classifiedFootprints,
             'Satellite Footprints': satFootprints,
             "2024 Zoning Map" : zoningMap,
+            'Building Height' : heightFootprints,
+            'Building Material' : materialFootprints,
+            'Named' : nameFootprints,
             'Churches': churchFootprints,
             'Theaters': theaterFootprints,
             'Garages': garageFootprints,
@@ -768,10 +941,11 @@ function switchBaseLayer(layer) {
             'UChicago': uchicagoFootprints,
             'Stores': storeFootprints,
             'Flats': flatFootprints,
-            'Dwellings': dwellingFootprints
+            'Dwellings': dwellingFootprints,
+            'Filling Stations': gasFootprints,
+            'Offices': officeFootprints
         };
 
-//Additional code to make custom-layer control work
         document.querySelectorAll('.custom-layer-control input[type="checkbox"]').forEach(function(checkbox) {
             checkbox.addEventListener('change', function() {
                 var layer = overlayLayers[this.labels[0].textContent];
@@ -812,7 +986,6 @@ function switchBaseLayer(layer) {
                 });
             });
         });
-        
         var basemaps = {
                 "Default": tilesource_layer,
                 "Satellite": imagery
@@ -823,6 +996,9 @@ function switchBaseLayer(layer) {
                 "Satellite Footprints": satFootprints,
                 "2024 Zoning Map" : zoningMap,
                 "Classified Footprints": classifiedFootprints,
+                'Building Height' : heightFootprints,
+                'Building Material' : materialFootprints,
+                'Named' : nameFootprints,
                 "Churches" : churchFootprints,
                 'Theaters': theaterFootprints,
                 'Garages': garageFootprints,
@@ -833,14 +1009,18 @@ function switchBaseLayer(layer) {
                 "UChicago" : uchicagoFootprints,
                 "Stores" : storeFootprints,
                 "Flats" : flatFootprints,
-                "Dwellings" : dwellingFootprints
+                "Dwellings" : dwellingFootprints,
+                "Filling Stations" : gasFootprints,
+                "Offices" : officeFootprints
             };
         L.control.layers(
                 basemaps, overlaymaps, {collapsed:true}).addTo(map);
                 updateLegend();
-                
+        
     </script>
 
 </body>
 
 </html>
+
+
