@@ -1,4 +1,4 @@
-{
+var loop_zoning = [{
 "type": "FeatureCollection",
 "name": "loop_Zoning",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
@@ -131,3 +131,4 @@
 { "type": "Feature", "properties": { "case_numbe": 0.0, "case_type": null, "zoning_id": 66.0, "zone_type": 4.9999999999999991, "zone_class": "PD 310", "edit_statu": null, "date_creat": "2002-07-25", "time_creat": "00:00:00.000", "create_uid": null, "date_edit_": "2024-12-12", "time_edit_": "00:00:00.000", "edit_uid": "FKHALIQUE", "pd_prefix": null, "pd_num": 310.0, "comments": null, "ordinance": null, "date_ordin": null, "time_ordin": null, "zoning_rel": null, "shape_area": 41253.303994200003, "shape_len": 819.41977732400005, "pedstreet_": null, "objectid": 1926683.0, "globalid": "{3934D1E9-CBD2-4F21-9BE2-D5AE83BBE799}", "pmd_sub_ar": null, "override_c": null, "override_r": "0", "clerk_url": null, "clerk_docn": null, "fudgeZone": "PD" }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -87.632291734830446, 41.879402304600411 ], [ -87.632947547503235, 41.87939563980828 ], [ -87.632949124518078, 41.879487319398635 ], [ -87.632962953707803, 41.88000321150701 ], [ -87.632963649114018, 41.880029334624474 ], [ -87.632795373867623, 41.880030939940639 ], [ -87.632309877525316, 41.880038140362323 ], [ -87.632309302307462, 41.880018460811165 ], [ -87.632302382482365, 41.87981683954586 ], [ -87.632291734830446, 41.879402304600411 ] ] ] ] } }
 ]
 }
+]

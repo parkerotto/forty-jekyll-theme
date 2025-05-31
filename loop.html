@@ -39,6 +39,10 @@ is_map: true
                     <input type="checkbox" id="classified-footprints" checked>
                     <label for="classified-footprints">Classified Footprints</label>
                 </div>
+                <div>
+                    <input type="checkbox" id="2024-zoning-map">
+                    <label for="2024-zoning-map">2024 Zoning Map</label>
+                  </div>
             </div>
             </div>
             <div class="dropdown">
@@ -121,6 +125,7 @@ is_map: true
 </section>
 
 <script src="jsons/R20_Loop.js"></script>
+<script src="jsons/loop_Zoning.js"></script>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -141,13 +146,12 @@ var map = L.map('map', {
             attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
         });
 
-            function getZoningColor(zone_class) {
-                switch (zone_class) {
-                    case 'B' : return '#fbb4ae';
+            function getZoningColor(fudgeZone) {
+                switch (fudgeZone) {
+                    case 'DX' : return '#fbb4ae';
                     case 'PD' : return '#b3cde3';
-                    case 'RM' : return '#decbe4';
-                    case 'RS' : return '#fed9a6';
-                    case 'RT' : return '#e5d8bd';
+                    case 'DR' : return '#decbe4';
+                    case 'DC' : return '#fed9a6';
                     case 'T' : return '#fdc086';
                     case 'POS' : return '#ccebc5';
                     default : return 'gray';
@@ -411,6 +415,38 @@ var map = L.map('map', {
                 }
             };
 
+            function zoningColor(feature){
+                return {
+                    fillColor: getZoningColor(feature.properties.fudgeZone),
+                    weight: 2,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.6
+                }
+            };
+
+            var zoningLookup = {
+                'DC': 'Downtown Core (DC)',
+                'DX': 'Downtown Mixed Use (DX)',
+                'DR': 'Downtown Residential (DR)',
+                'T': 'Transportation (T)',
+                'PD': 'Planned Development (PD)',
+                'POS': 'Planned Open Space (POS)'
+            };
+
+var zoningOEF = function (feature, layer) {
+                if (feature.properties) {
+                    var prop = feature.properties;
+                    var zoningFull = zoningLookup[prop['fudgeZone']] || prop['fudgeZone'];
+                    var popup1 =
+                        '<h3>Zoning</h3>' +
+                        zoningFull;
+                    feature.layer = layer;
+                    layer.on('click', function (){
+  document.getElementById('location-data').innerHTML = `${popup1}`
+  
+});
+                }};
             var materialLookup = {
                 'B': 'Brick',
                 'S': 'Stone',
@@ -609,6 +645,13 @@ var footprints = new L.geoJson(r20Loop,
                 }
             );
 
+            var zoningMap = new L.geoJson(loop_zoning,
+                {
+                    style: zoningColor,
+                    onEachFeature: zoningOEF
+                }
+            );
+
 
             function updateLegend() {
             var tableContent = "";
@@ -702,6 +745,36 @@ var footprints = new L.geoJson(r20Loop,
                 </table>`;
             }
 
+            if (document.getElementById('2024-zoning-map').checked) {
+                tableContent = `
+                <table>
+                    <tr>
+                        <td>Downtown Mixed Use (DX)</td>
+                        <td><span class="legend-colorBox" style="background-color: #b3cde3;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Planned Development (PD)</td>
+                        <td><span class="legend-colorBox" style="background-color: #b3cde3;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Downtown Residential (DR)</td>
+                        <td><span class="legend-colorBox" style="background-color: #decbe4;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Downtown Core (DC)</td>
+                        <td><span class="legend-colorBox" style="background-color: #fed9a6;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Transportation (T)</td>
+                        <td><span class="legend-colorBox" style="background-color: #fdc086;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Planned Open Space (POS)</td>
+                        <td><span class="legend-colorBox" style="background-color: #ccebc5;"></span></td>
+                    </tr>
+                </table>`;
+            }
+
             var legendTable = document.getElementById('legend-table');
             legendTable.innerHTML = tableContent;
         };
@@ -719,6 +792,7 @@ function switchBaseLayer(layer) {
             'Blank Footprints': footprints,
             'Classified Footprints': classifiedFootprints,
             'Satellite Footprints': satFootprints,
+            '2024 Zoning Map' : zoningMap,
             'Building Height' : heightFootprints,
             'Building Material' : materialFootprints,
             'Named' : nameFootprints,
@@ -782,6 +856,7 @@ function switchBaseLayer(layer) {
                 "Blank Footprints": footprints,
                 'Classified Footprints': classifiedFootprints,
                 'Satellite Footprints': satFootprints,
+                '2024 Zoning Map' : zoningMap,
                 'Building Height' : heightFootprints,
                 'Building Material' : materialFootprints,
                 'Named' : nameFootprints,
