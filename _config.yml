@@ -1,7 +1,7 @@
 # site settings
-title: Roaring 20s Chicago
+title: Chicago Urban Heritage Project
 subtitle: by Chicago Studies
-email: youremailaddress@gmail.com
+email: edward5@uchicago.edu
 description: A Chicago Studies Project
 baseurl: # the subpath of your site, e.g. /blog
 url: # the base hostname & protocol for your site
@@ -11,7 +11,7 @@ city: Chicago
 state: IL
 zip_code: 60637
 country: United States of America
-phone: (716) 555-5555
+phone: (312) 513-4244
 page_excerpts: true
 
 # homepage tiles

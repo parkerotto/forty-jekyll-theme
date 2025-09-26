@@ -1,7 +1,7 @@
 ---
 layout: home
 title: Home
-landing-title: 'Roaring 20s Chicago'
+landing-title: 'Chicago Urban Heritage'
 description: Enter a description here
 image: null
 author: null
