@@ -46,6 +46,9 @@ nav-menu: true
 <b>Partners:</b> Dr. Emily Talen's Historical Preservation Class
 <br><b>Student Supervisors:</b> Griggs Fuller, Sophia Liu
 <br><b>Student Researchers:</b> Yixin Chen, Ana Estupinan, Elena Osse, Alex Arnell
+<br><br><h4>Winter 2026 Cohort</h4>
+<b>Student Supervisors:</b> Griggs Fuller, Sophia Liu
+<br><b>Student Reseachers:</b>Yixin Chen, Ana Estupinan, Alex Arnell, Sergio Marquez, Nick Emerton, Sebastian Altomare
 </p>
 
 <img src="assets/images/cdslogohorizontal.png"
