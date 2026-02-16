@@ -772,10 +772,10 @@ is_map: true
                     <b>Sanborn: </b> ${prop.Sanborn} 
                     <br><b>Footprint Area: </b> ${prop.area} m<sup>2</sup>
                     <br><b>Footprint Year: </b> ${prop.Year}
-                    <br><b>Use: </b> ${prop.Use}
-                    <br><b>Height: </b> ${prop.Height} Stories
+                    <br><b>Use: </b> ${prop.Use || 'None Recorded'}
+                    <br><b>Height: </b> ${prop.Height || 'None Recorded'} ${prop.Height == 1 ? 'Story' : 'Stories'}
                     <br><b>Primary Material: </b> ${materialFull}
-                    <br><b>Building Name (If Applicable): </b> ${prop.Name}  
+                    <br><b>Building Name: </b> ${prop.Name || 'None Recorded'}  
                     <br><br><small>Coordinates: <i> ${prop.lat}, ${prop.long}</i></small>
                 `;
             map.on('mouseenter', layerId, () => {

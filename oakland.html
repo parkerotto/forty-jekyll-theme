@@ -551,7 +551,8 @@ var zoningOEF = function (feature, layer) {
                 'R': 'Railroad',
                 'M': 'Industrial',
                 'V': 'Vacant',
-                'N': 'Other/No Use'
+                'N': 'Other/No Use',
+                null: 'None Recorded'
             };
 
             var onEachFeature = function (feature, layer) {
@@ -569,8 +570,8 @@ var zoningOEF = function (feature, layer) {
                         '<br><b>Secondary Use: </b>' + use2Full +
                         '<br><b>Height: </b>' + prop['Height'] + ' Stories' + 
                         '<br><b>Primary Material: </b>' + materialFull + 
-                        '<br><b>Building Name (If Applicable): </b>' + prop['Name'] + 
-                        '<br><b>Notes: </b>' + prop['Notes'] +
+                        '<br><b>Building Name: </b>' + (prop['Name'] || 'None Recorded') + 
+                        '<br><b>Notes: </b>' + (prop['Notes'] || 'None Recorded') +
                         '<br><br><small>Coordinates: <i>' + prop['lat'] + ', ' + prop['long'] + '</i></small>';
 
                     feature.layer = layer;

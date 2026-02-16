@@ -436,10 +436,10 @@ var zoningOEF = function (feature, layer) {
                     var popup =
                         '<h4>Sanborn Fire Insurance Data</h4>' +
                         '<b>Sanborn: </b>' + prop['Sanborn'] +
-                        '<br><b>Footprint Area: </b>' + prop['area'] + ' m<sup>2</sup>' +
+                     //   '<br><b>Footprint Area: </b>' + prop['area'] + ' m<sup>2</sup>' +
                         '<br><b>Footprint Year: </b>' + prop['Year'] +
-                        '<br><b>Use: </b>' + prop['Uses'] +
-                        '<br><br><small>Coordinates: <i>' + prop['lat'] + ', ' + prop['long'] + '</i></small>';
+                        '<br><b>Use: </b>' + prop['Uses'];
+              //          '<br><br><small>Coordinates: <i>' + prop['lat'] + ', ' + prop['long'] + '</i></small>';
 //Specific place for On Click functionality
 
                     feature.layer = layer;

@@ -110,6 +110,10 @@ is_map: true
                               <input type="checkbox" id="dwellings">
                               <label for="dwellings">Dwellings</label>
                           </div>
+                          <div>
+                            <input type="checkbox" id="use2s">
+                            <label for="use2s">Multi-Use</label>
+                        </div>
                     </div>  
         </div>
     </div>
@@ -206,6 +210,13 @@ var map = L.map('map', {
                     value > 1.4 ? '#b3cde3': 
                     value > 0 ? '#edf8fb': 
                     '#ffffff';
+            };
+
+            function getUse2Style(Use2) {
+                switch (Use2) {
+                    case null : return 'transparent';
+                    default : return '#FF0000';
+                }
             };
 
             function getNameStyle(Name) {
@@ -315,6 +326,16 @@ var map = L.map('map', {
             function nameStyle(feature){
                 return {
                     fillColor: getNameStyle(feature.properties.Name),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function use2Style(feature){
+                return {
+                    fillColor: getUse2Style(feature.properties.Use2),
                     weight: 0.3,
                     opacity: 1,
                     color: 'black',
@@ -510,7 +531,8 @@ var zoningOEF = function (feature, layer) {
                 'R': 'Railroad',
                 'M': 'Industrial',
                 'V': 'Vacant',
-                'N': 'Other/No Use'
+                'N': 'Other/No Use',
+                null: 'None Recorded'
             };
 
             var onEachFeature = function (feature, layer) {
@@ -518,16 +540,19 @@ var zoningOEF = function (feature, layer) {
                     var prop = feature.properties;
                     var materialFull = materialLookup[prop['Material']] || prop['Material'];
                     var useFull = useLookup[prop['Use']] || prop['Use'];
+                    var use2Full = useLookup[prop['Use2']] || prop['Use2'];
                     var popup =
                         '<h4>Sanborn Fire Insurance Data</h4>' +
                         '<b>Sanborn: </b>' + prop['Sanborn'] +
                         '<br><b>Footprint Area: </b>' + prop['Area'] + ' m<sup>2</sup>' +
                         '<br><b>Footprint Year: </b>' + prop['Year'] +
                         '<br><b>Use: </b>' + useFull +
-                        '<br><b>Height: </b>' + prop['Height'] + ' Stories' + 
+                        '<br><b>Secondary Use: </b>' + use2Full +
+                        '<br><b>Height: </b>' + prop['Height'] + (prop['Height'] == 1 ? ' Story' : ' Stories') + 
                         '<br><b>Primary Material: </b>' + materialFull + 
-                        '<br><b>Building Name (If Applicable): </b>' + prop['Name'] + 
-                        '<br><br><small>Coordinates: <i>' + prop['lat'] + ', ' + prop['long'] + '</i></small>';
+                        '<br><b>Building Name: </b>' + (prop['Name'] || 'None Recorded') +
+                        '<br><b>Notes: </b>' + (prop['Notes'] || 'None Recorded');
+                        //'<br><br><small>Coordinates: <i>' + prop['lat'] + ', ' + prop['long'] + '</i></small>';
 
                     feature.layer = layer;
                     
@@ -618,6 +643,13 @@ var footprints = new L.geoJson(r20ggc,
             var nameFootprints = new L.geoJson(r20ggc,
                 {
                     style : nameStyle,
+                    onEachFeature : onEachFeature
+                }
+            );
+
+            var use2Footprints = new L.geoJson(r20ggc,
+                {
+                    style : use2Style,
                     onEachFeature : onEachFeature
                 }
             );
@@ -864,6 +896,7 @@ function switchBaseLayer(layer) {
             'Building Height' : heightFootprints,
             'Building Material' : materialFootprints,
             'Named' : nameFootprints,
+            'Multi-Use' : use2Footprints,
             'Churches': churchFootprints,
             'Leisure': theaterFootprints,
             'Garages': garageFootprints,
@@ -930,6 +963,7 @@ function switchBaseLayer(layer) {
                 'Building Height' : heightFootprints,
                 'Building Material' : materialFootprints,
                 'Named' : nameFootprints,
+                'Multi-Use' : use2Footprints,
                 "Churches" : churchFootprints,
                 'Leisure': theaterFootprints,
                 'Garages': garageFootprints,

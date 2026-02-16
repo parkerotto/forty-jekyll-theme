@@ -469,7 +469,8 @@ var zoningOEF = function (feature, layer) {
                 'R': 'Railroad',
                 'M': 'Industrial',
                 'V': 'Vacant',
-                'N': 'Other/No Use'
+                'N': 'Other/No Use',
+                null: 'None Recorded'
             };
 
             var onEachFeature = function (feature, layer) {
@@ -479,15 +480,15 @@ var zoningOEF = function (feature, layer) {
                     var useFull = useLookup[prop['Use']] || prop['Use'];
                     var popup =
                         '<h4>Sanborn Fire Insurance Data</h4>' +
-                        '<b>Sanborn: </b>' + prop['Sanborn'] +
-                        '<br><b>Footprint Area: </b>' + prop['Area'] + ' m<sup>2</sup>' +
+                        '<b>Sanborn: </b>' + 'Central Business District of Chicago' +
+                        //'<br><b>Footprint Area: </b>' + prop['Area'] + ' m<sup>2</sup>' +
                         '<br><b>Footprint Year: </b>' + '1927' +
                         '<br><b>Use: </b>' + useFull +
                         '<br><b>Height: </b>' + prop['Height'] + ' Stories' + 
                         '<br><b>Primary Material: </b>' + materialFull + 
-                        '<br><b>Building Name (If Applicable): </b>' + prop['Name'] + 
-                        '<br><b>Notes: </b>' + prop['Notes'] +
-                        '<br><br><small>Coordinates: <i>' + prop['lat'] + ', ' + prop['long'] + '</i></small>';
+                        '<br><b>Building Name: </b>' + (prop['Name'] || 'None Recorded') + 
+                        '<br><b>Notes: </b>' + (prop['Notes'] || 'None Recorded');
+                        //'<br><br><small>Coordinates: <i>' + prop['lat'] + ', ' + prop['long'] + '</i></small>';
 
                     feature.layer = layer;
                     
