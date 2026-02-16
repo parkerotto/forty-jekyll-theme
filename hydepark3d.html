@@ -1,0 +1,1214 @@
+---
+title: Hyde Park
+layout: maps
+description: 'An interactive map of Hyde Park in 1925-6 (NOW IN 3D!)'
+image: assets/images/hydepark.jpg
+nav-menu: false
+show_tile: false
+is_map: true
+---
+
+<!DOCTYPE html>
+<html>
+    <div class="custom-layer-control-ml" id="overlay-controls">
+        <div class="dropdown">
+            <button class="dropbtn">Basemap</button>
+            <div class="dropdown-content">
+                <div>
+                    <input type="radio" id="default" name="base-layer" value="custom-basemap-layer" checked>
+                    <label for="default">Default</label>
+                </div>
+                <div>
+                    <input type="radio" id="satellite" name="base-layer" value="sat-layer">
+                    <label for="satellite">Satellite</label>
+                </div>
+                <div>
+                    <input type="radio" id="osm" name="base-layer" value="osm-layer">
+                    <label for="osm">OSM</label>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Popular Views</button>
+            <div class="dropdown-content">
+                <div>
+                    <input type="radio" id="classified-footprints" name="overlay" value="classified" checked>
+                    <label for="classified-footprints">Classified By Use</label>
+                </div>
+                <div>
+                    <input type="radio" id="sat-footprints" name="overlay" value="sat">
+                    <label for="sat-footprints">Semi-Transparent</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="2024-zoning-map" name="zoning" value="zoning-layer">
+                    <label for="2024-zoning-map">2024 Zoning</label>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Choropleth Maps</button>
+            <div class="dropdown-content">
+                <div>
+                    <input type="radio" name="overlay" id="building-height" value="height">
+                    <label for="building-height">Building Height</label>
+                </div>
+                <div>
+                    <input type="radio" name="overlay" id="building-material" value="material">
+                    <label for="building-material">Building Material</label>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Filters</button>
+            <div class="dropdown-content">
+                <div>
+                    <div>
+                        <input type="radio" name="overlay" value="named" id="named">
+                        <label for="named">Named</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="overlay" value="churches" id="churches">
+                        <label for="churches">Churches</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="overlay" value="theaters" id="theaters">
+                        <label for="theaters">Theaters</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="overlay" value="garages" id="garages">
+                        <label for="garages">Garages</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="overlay" value="transit" id="transit">
+                        <label for="transit">Transit</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="overlay" value="hotels" id="hotels">
+                        <label for="hotels">Hotels</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="overlay" value="industrial" id="industrial">
+                        <label for="industrial">Industrial</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="overlay" value="institutional" id="institutional">
+                        <label for="institutional">Institutional</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="overlay" value="uchicago" id="uchicago">
+                        <label for="uchicago">UChicago</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="overlay" value="stores" id="stores">
+                        <label for="stores">Stores</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="overlay" value="flats" id="flats">
+                        <label for="flats">Flats</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="overlay" value="dwellings" id="dwellings">
+                        <label for="dwellings">Dwellings</label>
+                    </div>
+                </div>  
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">View Modes</button>
+            <div class="dropdown-content">
+                <div>
+                    <button id="2d" name="view-mode" value="2d-view-mode">2D View</button>
+                    <button id="3d" name="view-mode" value="3d-view-mode">3D View</button>
+                    <button id="north" name="view-mode" value="north-view-mode">Face North</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<section id="one" class="section-map">
+    
+    <div id="map"></div>
+    <div id="sidebar">
+        <h2>Hyde Park</h2>
+        <details class="legend">
+            <summary><b>Legend</b></summary>
+            <span id='legend-table'></span>
+        </details>
+<br>
+        <div id="location-data" class="location-metadata">
+            <p>
+                Enjoy our new look (now in 3D)!
+                <br><br>Here you will find information on what Hyde Park looked like in the 1920s.  
+                <br><br>Toggle different data views and filter by using the menu bar above.
+                <br><br>Right click and drag to change the 3D viewing angle. 
+                <br><br>Left click on a building to explore the data! 
+            </p>
+        </div>
+    </div>	
+</section>
+
+<script src="https://parkerotto.github.io/R20/R20HP/r20hp_height_dec.js"></script>
+
+<script src="jsons/hpzoning2024.js"></script>
+
+<script src='https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js'></script>
+<link href='https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css' rel='stylesheet' />
+
+<script>
+    const map = new maplibregl.Map({
+        container: 'map',
+        center: [-87.5948, 41.794],
+        zoom: 16,
+        pitch: 45,
+        minZoom: 15,
+        maxZoom: 18,
+        bearing: 0,
+        style: {
+            version: 8,
+            sources: {},
+            layers: []
+        }
+    });
+
+    map.on('load', () => {
+
+        //LOAD BASEMAP
+
+        map.addSource('custom-basemap', {
+            type: 'raster',
+            tiles: ['https://parkerotto.github.io/chibwbasemap/newbasemapxyz/{z}/{x}/{y}.png'],
+            tileSize: 256
+        });
+
+        map.addLayer({
+            id: 'custom-basemap-layer',
+            type: 'raster',
+            source: 'custom-basemap',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'visible'
+            }
+        });
+
+        //LOAD SATELLITE BASEMAP
+
+        map.addSource('sat-basemap', {
+            type: 'raster',
+            tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+            tileSize: 256
+        });
+
+        map.addLayer({
+            id: 'sat-layer',
+            type: 'raster',
+            source: 'sat-basemap',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            }
+        });
+
+        //LOAD OSM BASEMAP
+
+        map.addSource('osm-basemap', {
+            type: 'raster',
+            tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+            tileSize: 256
+        });
+
+        map.addLayer({
+            id: 'osm-layer',
+            type: 'raster',
+            source: 'osm-basemap',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            }
+        });
+
+        //LOAD ZONING
+
+        const hpZoning = hpZoning2024[0];
+
+        map.addSource('hp-zoning', {
+            type: 'geojson',
+            data: hpZoning
+        });
+
+        //STYLE ZONING
+
+        map.addLayer({
+            id: 'zoning-layer',
+            type: 'fill',
+            source: 'hp-zoning',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                 'fill-color': [
+                        'match',
+                        ['get', 'zone_class'],
+                        'B', '#fbb4ae',
+                        'PD', '#b3cde3',
+                        'RM', '#decbe4',
+                        'RS', '#fed9a6',
+                        'RT', '#e5d8bd',
+                        'T', '#fdc086',
+                        'POS', '#ccebc5',
+                        '#808080' // default
+                    ],
+                    'fill-opacity': 0.7
+            }
+        });
+        
+        //LOAD FOOTPRINTS (GENERAL)
+
+        const hpData = r20hp[0];
+
+        map.addSource('hp-data', {
+            type: 'geojson',
+            data: hpData
+        });
+
+        //STYLE FOOTPRINTS (CLASSIFIED)
+
+        map.addLayer({
+            id: 'classified',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'visible'
+            },
+            paint: {
+                 'fill-extrusion-color': [
+                        'match',
+                        ['get', 'Use'],
+                        'Church', '#9fed18',
+                        'Dwelling', '#987db7',
+                        'Hotel', '#efc866',
+                        'Industrial', '#00e9fe',
+                        'Institutional', '#ff8fd6',
+                        'Store', '#d9615b',
+                        'Flat', '#3596ce',
+                        'UChicago', '#800000',
+                        'Theater', '#FF0000',
+                        'Garage', '#006400',
+                        'Transit', '#000000',
+                        '#808080' // default
+                    ],
+                    'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                    'fill-extrusion-base': 0,
+                    'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //NAMED FOOTPRINTS
+
+        map.addLayer({
+            id: 'named',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                'fill-extrusion-color': [
+                    'case',
+                    ['!=', ['get', 'Name'], null],  // if Name is not null
+                    '#FF0000',                       // use red
+                    'transparent'              // else transparent
+                ],
+                'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                'fill-extrusion-base': 0,
+                'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //SATELLITE FOOTPRINTS
+
+        map.addLayer({
+            id: 'sat',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                'fill-extrusion-color': '#FFFFFF',
+                'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                'fill-extrusion-base': 0,
+                'fill-extrusion-opacity': 0.5
+            }
+        });
+
+
+        //CHURCH FOOTPRINTS
+
+        map.addLayer({
+            id: 'churches',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                 'fill-extrusion-color': [
+                        'match',
+                        ['get', 'Use'],
+                        'Church', '#9fed18',
+                        '#808080' // default
+                    ],
+                    'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                    'fill-extrusion-base': 0,
+                    'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //THEATERS
+
+        map.addLayer({
+            id: 'theaters',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                 'fill-extrusion-color': [
+                        'match',
+                        ['get', 'Use'],
+                        'Theater', '#FF0000',
+                        '#808080' // default
+                    ],
+                    'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                    'fill-extrusion-base': 0,
+                    'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //GARAGES
+
+        map.addLayer({
+            id: 'garages',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                 'fill-extrusion-color': [
+                        'match',
+                        ['get', 'Use'],
+                        'Garage', '#006400',
+                        '#808080' // default
+                    ],
+                    'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                    'fill-extrusion-base': 0,
+                    'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //TRANSIT
+
+        map.addLayer({
+            id: 'transit',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                 'fill-extrusion-color': [
+                        'match',
+                        ['get', 'Use'],
+                        'Transit', '#000000',
+                        '#808080' // default
+                    ],
+                    'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                    'fill-extrusion-base': 0,
+                    'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //DWELLINGS
+
+        map.addLayer({
+            id: 'dwellings',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                 'fill-extrusion-color': [
+                        'match',
+                        ['get', 'Use'],
+                        'Dwelling', '#987db7',
+                        '#808080' // default
+                    ],
+                    'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                    'fill-extrusion-base': 0,
+                    'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //FLATS
+
+        map.addLayer({
+            id: 'flats',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                 'fill-extrusion-color': [
+                        'match',
+                        ['get', 'Use'],
+                        'Flat', '#3596ce',
+                        '#808080' // default
+                    ],
+                    'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                    'fill-extrusion-base': 0,
+                    'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //STORES
+
+        map.addLayer({
+            id: 'stores',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                 'fill-extrusion-color': [
+                        'match',
+                        ['get', 'Use'],
+                        'Store', '#d9615b',
+                        '#808080' // default
+                    ],
+                    'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                    'fill-extrusion-base': 0,
+                    'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //HOTELS
+
+        map.addLayer({
+            id: 'hotels',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                 'fill-extrusion-color': [
+                        'match',
+                        ['get', 'Use'],
+                        'Hotel', '#efc866',
+                        '#808080' // default
+                    ],
+                    'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                    'fill-extrusion-base': 0,
+                    'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //INDUSTRIAL
+
+        map.addLayer({
+            id: 'industrial',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                 'fill-extrusion-color': [
+                        'match',
+                        ['get', 'Use'],
+                        'Industrial', '#00e9fe',
+                        '#808080' // default
+                    ],
+                    'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                    'fill-extrusion-base': 0,
+                    'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //INSTITUTIONAL
+
+        map.addLayer({
+            id: 'institutional',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                 'fill-extrusion-color': [
+                        'match',
+                        ['get', 'Use'],
+                        'Institutional', '#ff8fd6',
+                        '#808080' // default
+                    ],
+                    'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                    'fill-extrusion-base': 0,
+                    'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //UCHICAGO
+
+        map.addLayer({
+            id: 'uchicago',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                 'fill-extrusion-color': [
+                        'match',
+                        ['get', 'Use'],
+                        'UChicago', '#800000',
+                        '#808080' // default
+                    ],
+                    'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                    'fill-extrusion-base': 0,
+                    'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //CHOROPLETH MAPS
+
+        //Material
+
+        map.addLayer({
+            id: 'material',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                 'fill-extrusion-color': [
+                        'match',
+                        ['get', 'Material'],
+                        'W', '#D7D773',
+                        'B', '#eaa2b6',
+                        'F', '#96804f',
+                        'S', '#6797C2',
+                        '#808080' // default
+                    ],
+                    'fill-extrusion-height': [
+                        '*', 
+                        ['to-number', ['get', 'Height'], 0],
+                        3 // 3 meters per story
+                    ],
+                    'fill-extrusion-base': 0,
+                    'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //HEIGHT
+
+        map.addLayer({
+            id: 'height',
+            type: 'fill-extrusion',
+            source: 'hp-data',
+            minzoom: 10,
+            maxzoom: 19,
+            layout: {
+                visibility: 'none'
+            },
+            paint: {
+                'fill-extrusion-color': [
+                    'case',
+                    ['>', ['to-number', ['get', 'Height']], 6.9], '#810f7c',
+                    ['>', ['to-number', ['get', 'Height']], 3.4], '#8856a7',
+                    ['>', ['to-number', ['get', 'Height']], 2.4], '#8c96c6',
+                    ['>', ['to-number', ['get', 'Height']], 1.4], '#b3cde3',
+                    ['>', ['to-number', ['get', 'Height']], 0], '#edf8fb',
+                    '#808080' // default
+                ],
+                'fill-extrusion-height': [
+                    '*', 
+                    ['to-number', ['get', 'Height'], 0],
+                    3 // 3 meters per story
+                ],
+                'fill-extrusion-base': 0,
+                'fill-extrusion-opacity': 0.9
+            }
+        });
+
+        //Popups
+
+        const clickableLayers = [
+            'classified', 
+            'named', 
+            'sat', 
+            'churches', 
+            'theaters',
+            'garages',
+            'transit',
+            'dwellings',
+            'flats',
+            'stores',
+            'hotels',
+            'industrial',
+            'institutional',
+            'uchicago',
+            'material',
+            'height'
+        ];
+
+        clickableLayers.forEach(layerId => {
+            map.on('click', layerId, (e) => {
+            const prop = e.features[0].properties;
+            var materialLookup = {
+                'B': 'Brick',
+                'S': 'Stone',
+                'F': 'Fireproof Construction',
+                'W': 'Wood'
+            };
+            var materialFull = materialLookup[prop['Material']] || prop['Material'];
+            var popup = `
+                    <h4>Sanborn Fire Insurance Data</h4>
+                    <b>Sanborn: </b> ${prop.Sanborn} 
+                    <br><b>Footprint Area: </b> ${prop.area} m<sup>2</sup>
+                    <br><b>Footprint Year: </b> ${prop.Year}
+                    <br><b>Use: </b> ${prop.Use}
+                    <br><b>Height: </b> ${prop.Height} Stories
+                    <br><b>Primary Material: </b> ${materialFull}
+                    <br><b>Building Name (If Applicable): </b> ${prop.Name}  
+                    <br><br><small>Coordinates: <i> ${prop.lat}, ${prop.long}</i></small>
+                `;
+            map.on('mouseenter', layerId, () => {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+            
+            map.on('mouseleave', layerId, () => {
+                map.getCanvas().style.cursor = '';
+            });
+            document.getElementById('location-data').innerHTML = popup
+            });
+        });
+        updateLegend()
+    });
+
+    const basemapRadios = document.querySelectorAll('.custom-layer-control-ml input[name="base-layer"]');
+
+    const zoningCheck = document.querySelectorAll('.custom-layer-control-ml input[name="zoning"]');
+
+    const overlayRadios = document.querySelectorAll('.custom-layer-control-ml input[name="overlay"]');
+
+
+    const allBaseLayers = [
+        'custom-basemap-layer',
+        'sat-layer',
+        'osm-layer'
+    ];
+
+    const allZoningLayers = [
+        'zoning-layer'
+    ];
+
+    const allOverlayLayers = [
+        'classified',
+        'named',
+        'sat', 
+        'churches', 
+        'theaters',
+        'garages',
+        'transit',
+        'dwellings',
+        'flats',
+        'stores',
+        'hotels',
+        'industrial',
+        'institutional',
+        'uchicago',
+        'material',
+        'height'
+    ];
+
+    basemapRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const selectedBaseLayer = e.target.value;
+
+            allBaseLayers.forEach(layerId => {
+                map.setLayoutProperty(layerId, 'visibility', 'none');
+            });
+
+            if (selectedBaseLayer !== 'none') {
+                map.setLayoutProperty(selectedBaseLayer, 'visibility', 'visible');
+            }
+            updateLegend()
+        });
+    });
+
+    overlayRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const selectedOverlayLayer = e.target.value;
+
+            allOverlayLayers.forEach(layerId => {
+                map.setLayoutProperty(layerId, 'visibility', 'none');
+            });
+
+            if (selectedOverlayLayer !== 'none') {
+                map.setLayoutProperty(selectedOverlayLayer, 'visibility', 'visible');
+            }
+            updateLegend()
+        });
+    });
+
+    zoningCheck.forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            const selectedZoningLayer = e.target.value;
+
+            map.setLayoutProperty(
+                selectedZoningLayer, 
+                'visibility',
+                e.target.checked ? 'visible' : 'none'
+            )
+            updateLegend()
+        });
+    });
+
+    //View Mode
+
+    const viewButtons = document.querySelectorAll('button[name="view-mode"]');
+
+    viewButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            if (e.target.value === '2d-view-mode') {
+                map.easeTo({
+                    pitch: 0,
+                    duration: 2000
+                });
+            } else if (e.target.value === '3d-view-mode') {
+                map.easeTo({
+                    pitch: 45,
+                    duration: 2000
+                });
+            } else if (e.target.value === 'north-view-mode') {
+                map.easeTo({
+                    bearing: 0,
+                    duration: 2000
+                });
+            }
+        });
+    });
+
+    //LEGEND STUFF
+
+    function updateLegend() {
+            var tableContent = "";
+            if (document.getElementById('classified-footprints').checked) {
+                tableContent = `
+                <table>
+                    <tr>
+                        <td>Religious Buildings</td>
+                        <td><span class="legend-colorBox" style="background-color: #9fed18;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Garages</td>
+                        <td><span class="legend-colorBox" style="background-color: #006400;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Entertainment Venues</td>
+                        <td><span class="legend-colorBox" style="background-color: #FF0000;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Transportation & Railroading</td>
+                        <td><span class="legend-colorBox" style="background-color: #000000;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Dwellings (Single-Family Housing)</td>
+                        <td><span class="legend-colorBox" style="background-color: #987db7;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Hotels, Rooming</td>
+                        <td><span class="legend-colorBox" style="background-color: #efc866;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Industrial and Warehousing</td>
+                        <td><span class="legend-colorBox" style="background-color: #00e9fe;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Institutional (Including Schools)</td>
+                        <td><span class="legend-colorBox" style="background-color: #ff8fd6;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Stores</td>
+                        <td><span class="legend-colorBox" style="background-color: #d9615b;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Flats (Multi-Family Rentals)</td>
+                        <td><span class="legend-colorBox" style="background-color: #3596ce;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>UChicago (Including Fraternities)</td>
+                        <td><span class="legend-colorBox" style="background-color: #800000;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Default</td>
+                        <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
+                    </tr>
+                </table>`;
+            }
+
+            if (document.getElementById('building-height').checked) {
+                tableContent = `
+                <table>
+                    <tr>
+                        <td>7+ Stories</td>
+                        <td><span class="legend-colorBox" style="background-color: #810f7c;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>4 - 6.5 Stories</td>
+                        <td><span class="legend-colorBox" style="background-color: #8856a7;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>3 - 3.5 Stories</td>
+                        <td><span class="legend-colorBox" style="background-color: #8c96c6;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>1.5 - 2.5 Stories</td>
+                        <td><span class="legend-colorBox" style="background-color: #b3cde3;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>1 Story</td>
+                        <td><span class="legend-colorBox" style="background-color: #edf8fb;"></span></td>
+                    </tr>
+                </table>`;
+            }
+
+            if (document.getElementById('building-material').checked) {
+                tableContent = `
+                <table>
+                    <tr>
+                        <td>Brick (B)</td>
+                        <td><span class="legend-colorBox" style="background-color: #eaa2b6;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Wood (W)</td>
+                        <td><span class="legend-colorBox" style="background-color: #D7D773;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Stone (S)</td>
+                        <td><span class="legend-colorBox" style="background-color: #6797C2;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Fireproof Construction (F)</td>
+                        <td><span class="legend-colorBox" style="background-color: #96804f;"></span></td>
+                    </tr>
+                </table>`;
+            }
+
+            if (document.getElementById('2024-zoning-map').checked) {
+                tableContent += `
+                <table>
+                    <tr>
+                        <td>Business & Commercial (B & C)</td>
+                        <td><span class="legend-colorBox" style="background-color: #b3cde3;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Planned Development (PD)</td>
+                        <td><span class="legend-colorBox" style="background-color: #b3cde3;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Multi-Family Residential (RM)</td>
+                        <td><span class="legend-colorBox" style="background-color: #decbe4;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Single-Family Residential (RS)</td>
+                        <td><span class="legend-colorBox" style="background-color: #fed9a6;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Townhome Residential (RT)</td>
+                        <td><span class="legend-colorBox" style="background-color: #e5d8bd;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Transportation (T)</td>
+                        <td><span class="legend-colorBox" style="background-color: #fdc086;"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Planned Open Space (POS)</td>
+                        <td><span class="legend-colorBox" style="background-color: #ccebc5;"></span></td>
+                    </tr>
+                </table>`;
+            }
+
+            if (document.getElementById('named').checked) {
+                tableContent = `
+                    <table>
+                        <tr>
+                            <td>Named Buildings</td>
+                            <td><span class="legend-colorBox" style="background-color: #FF0000;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Other Buildings</td>
+                            <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
+                        </tr>
+                    </table>`;
+            }
+
+            if (document.getElementById('churches').checked) {
+                tableContent = `
+                    <table>
+                        <tr>
+                            <td>Religious Buildings</td>
+                            <td><span class="legend-colorBox" style="background-color: #9fed18;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Other Buildings</td>
+                            <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
+                        </tr>
+                    </table>`;
+            }
+
+            if (document.getElementById('theaters').checked) {
+                tableContent = `
+                    <table>
+                        <tr>
+                            <td>Entertainment Venues</td>
+                            <td><span class="legend-colorBox" style="background-color: #FF0000;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Other Buildings</td>
+                            <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
+                        </tr>
+                    </table>`;
+            }
+
+            if (document.getElementById('garages').checked) {
+                tableContent = `
+                    <table>
+                        <tr>
+                            <td>Garages</td>
+                            <td><span class="legend-colorBox" style="background-color: #006400;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Other Buildings</td>
+                            <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
+                        </tr>
+                    </table>`;
+            }
+
+            if (document.getElementById('transit').checked) {
+                tableContent = `
+                    <table>
+                        <tr>
+                            <td>Transportation & Railroading</td>
+                            <td><span class="legend-colorBox" style="background-color: #000000;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Other Buildings</td>
+                            <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
+                        </tr>
+                    </table>`;
+            }
+
+            if (document.getElementById('hotels').checked) {
+                tableContent = `
+                    <table>
+                        <tr>
+                            <td>Hotels and Rooming</td>
+                            <td><span class="legend-colorBox" style="background-color: #efc866;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Other Buildings</td>
+                            <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
+                        </tr>
+                    </table>`;
+            }
+
+            if (document.getElementById('industrial').checked) {
+                tableContent = `
+                    <table>
+                        <tr>
+                            <td>Industrial and Warehousing</td>
+                            <td><span class="legend-colorBox" style="background-color: #00e9fe;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Other Buildings</td>
+                            <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
+                        </tr>
+                    </table>`;
+            }
+
+            if (document.getElementById('institutional').checked) {
+                tableContent = `
+                    <table>
+                        <tr>
+                            <td>Institutional (Including Schools)</td>
+                            <td><span class="legend-colorBox" style="background-color: #ff8fd6;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Other Buildings</td>
+                            <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
+                        </tr>
+                    </table>`;
+            }
+
+            if (document.getElementById('uchicago').checked) {
+                tableContent = `
+                    <table>
+                        <tr>
+                            <td>UChicago (Including Fraternities)</td>
+                            <td><span class="legend-colorBox" style="background-color: #800000;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Other Buildings</td>
+                            <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
+                        </tr>
+                    </table>`;
+            }
+
+            if (document.getElementById('stores').checked) {
+                tableContent = `
+                    <table>
+                        <tr>
+                            <td>Stores</td>
+                            <td><span class="legend-colorBox" style="background-color: #d9615b;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Other Buildings</td>
+                            <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
+                        </tr>
+                    </table>`;
+            }
+
+            if (document.getElementById('flats').checked) {
+                tableContent = `
+                    <table>
+                        <tr>
+                            <td>Flats (Multi-Family Rentals)</td>
+                            <td><span class="legend-colorBox" style="background-color: #3596ce;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Other Buildings</td>
+                            <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
+                        </tr>
+                    </table>`;
+            }
+
+            if (document.getElementById('dwellings').checked) {
+                tableContent = `
+                    <table>
+                        <tr>
+                            <td>Dwellings (Single-Family Housing)</td>
+                            <td><span class="legend-colorBox" style="background-color: #987db7;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Other Buildings</td>
+                            <td><span class="legend-colorBox" style="background-color: #808080;"></span></td>
+                        </tr>
+                    </table>`;
+            }
+
+            var legendTable = document.getElementById('legend-table');
+            legendTable.innerHTML = tableContent;
+        };
+
+</script>
+
+</body>
+
+</html>

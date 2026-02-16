@@ -41,6 +41,7 @@ input[type="checkbox"], input[type="radio"] {
 display: block;
 float: left;
 margin-right: 10px;
+margin-top: 13px;
 opacity: 1;
 }
 .custom-layer-control {
@@ -67,6 +68,33 @@ opacity: 1;
     text-transform: none;
 }
 .custom-layer-control a:hover {
+    background-color: #444;
+}
+
+.custom-layer-control-ml {
+    position: relative;
+    top: 0;
+    margin-left: 25%;
+    width: 75%;
+    background: #333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    text-align: center;
+}
+.custom-layer-control-ml a, button {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    cursor: pointer;
+    padding: 10px;
+    box-shadow: none;
+    text-transform: none;
+}
+.custom-layer-control-ml a:hover {
     background-color: #444;
 }
 
@@ -167,6 +195,17 @@ padding: 0.5em;
         display: none;
 
     }
+
+    .custom-layer-control-ml {
+
+        position: relative;
+        top: 0;
+        margin-left: 0;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+
+    }
   }
 
   @media screen and (min-width: 2500px) {
@@ -183,6 +222,11 @@ padding: 0.5em;
     }
 
     .custom-layer-control {
+        margin-left: 40%;
+        width: 60%;
+    }
+
+    .custom-layer-control-ml {
         margin-left: 40%;
         width: 60%;
     }
