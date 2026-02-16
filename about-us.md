@@ -36,26 +36,31 @@ nav-menu: true
 	</div>
 </div>
 <h2 id="content">Student Workers</h2>
-<p>The Chicago Urban Heritage Project would not be possible without the fantastic work of its student research assistants.  
-<br><h4>Inaugural Cohort (Spring 2025):</h4>
-<b>Student Researchers:</b> Dave Rotblatt, Griggs Fuller, Hannah Chen, Sophia Liu, Yixin Chen, and Ana Estupinan.
-<br><br><h4>Summer 2025 Cohort:</h4> 
-<b>Partners:</b> Dr. Emily Talen's Urbanism Lab; Summer Institute in Social Research Methods
-<br><b>Student Researchers:</b> Dave Rotblatt, Griggs Fuller, Sophia Liu, Yixin Chen, Ana Estupinan, Elena Osse, Shiv Shamdasani, Alex Arnell, Ella Montgomery, Nathalie Lam, Micah Sheinberg
-<br><br><h4>Fall 2025 Cohort:</h4>
-<b>Partners:</b> Dr. Emily Talen's Historical Preservation Class
-<br><b>Student Supervisors:</b> Griggs Fuller, Sophia Liu
-<br><b>Student Researchers:</b> Yixin Chen, Ana Estupinan, Elena Osse, Alex Arnell
-<br><br><h4>Winter 2026 Cohort</h4>
+<p>The Chicago Urban Heritage Project would not be possible without the fantastic work of its student research assistants.
+<br><h4>Active Cohort (Winter 2026)</h4>
 <b>Student Supervisors:</b> Griggs Fuller, Sophia Liu
-<br><b>Student Reseachers:</b>Yixin Chen, Ana Estupinan, Alex Arnell, Sergio Marquez, Nick Emerton, Sebastian Altomare
+<br><b>Student Researchers:</b> Yixin Chen, Ana Estupinan, Alex Arnell, Sergio Marquez, Nick Emerton, Sebastian Altomare
+<br><br><h4>Partners</h4>
+Dr. Emily Talen's Urbanism Lab
+<br>Dr. Emily Talen's Historical Preservation Class
+<br>Summer Institute in Social Research Methods (SISRM)
+<br><br><h4>Alumni</h4>
+Hannah Chen (Spring '25)
+<br>Nathalie Lam (Summer '25)
+<br>Ella Montgomery (Summer '25)
+<br>Elena Osse (Summer '25 - Fall '25)
+<br>Dave Rotblatt (Spring '25 - Summer '25)
+<br>Shiv Shamdasani (Summer '25)
+<br>Micah Sheinberg (Summer '25)
+<br><br><h4>Inaugural Cohort (Spring 2025):</h4>
+Dave Rotblatt, Griggs Fuller, Hannah Chen, Sophia Liu, Yixin Chen, Ana Estupinan.
 </p>
 
 <img src="assets/images/cdslogohorizontal.png"
      alt="CDS Logo"
      style="float: left;" />
 <h2 id="content">UChicago Library Center for Digital Scholarship</h2>
-<p>This website was designed with help from the Center for Digital Scholarship. The Center for Digital Scholarship is a resource hub for digital methods in research and learning. We provide consultations and services on digital projects, data, and research dissemination.</p>
+<p>This website was designed with help from the Center for Digital Scholarship with special thanks to Digital Scholarship Librarian, Taylor Faires. The Center for Digital Scholarship is a resource hub for digital methods in research and learning. They provide consultations and services on digital projects, data, and research dissemination.</p>
 <hr class="major" />
 
 </div>
