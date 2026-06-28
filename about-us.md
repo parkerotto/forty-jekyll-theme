@@ -26,7 +26,7 @@ nav-menu: true
 		<img src="assets/images/potto.jpg"
      		alt="Parker Otto Headshot"/>
 		<h3>Parker Otto</h3>
-		<p>Parker Otto was the inaugural Herbert Zarr Post-Baccalaureate Fellow in GIS with the University of Chicago Library's Center for Digital Scholarship.  He currently serves as the Graduate Research Coordinator for the Chicago Studies Program and is working on his masters in city and regional planning at the University of Pennsylvania.  The underlying code and computational workflow that makes the Chicago Urban Heritage Project possible was developed by him in May of 2024 as part of the GIScience Practicum course at the University of Chicago.</p>
+		<p>Parker Otto is the Senior Project Manager and founder of the Chicago Urban Heritage Project.  He also serves as the Graduate Research Coordinator for the Chicago Studies Program and is working on his master's in city planning at the University of Pennsylvania.  The underlying code and computational workflow that makes the Chicago Urban Heritage Project possible was developed by him in May of 2024 as part of the GIScience Practicum course at the University of Chicago and refined over his time as the inaugural Herbert Zarr Post-Baccalaureate Fellow in GIS with the University of Chicago Library's Center for Digital Scholarship.</p>
 	</div>
 	<div class="6u$ 12u$(small)">
 		<img src="assets/images/cskrable.jpg"
@@ -36,16 +36,19 @@ nav-menu: true
 	</div>
 </div>
 <h2 id="content">Student Workers</h2>
-<p>The Chicago Urban Heritage Project would not be possible without the fantastic work of its student research assistants.
-<br><h4>Active Cohort (Winter 2026)</h4>
-<b>Student Supervisors:</b> Griggs Fuller, Sophia Liu
-<br><b>Student Researchers:</b> Yixin Chen, Ana Estupinan, Alex Arnell, Sergio Marquez, Nick Emerton, Sebastian Altomare
+<p>The Chicago Urban Heritage Project would not be possible without the efforts of its outstanding student research assistants.
+<br><h4>Active Cohort (Summer 2026)</h4>
+<b>Assistant Project Manager:</b> Sophia Liu
+<br><b>Student Researchers:</b> Yixin Chen, Ana Estupinan, Sergio Marquez, Sebastian Altomare, Kuzey Tutkan, Ezra Ellenbogen, Thomas Sang, Gabe Pellebon, Juliana Dick.
 <br><br><h4>Partners</h4>
 Dr. Emily Talen's Urbanism Lab
 <br>Dr. Emily Talen's Historical Preservation Class
 <br>Summer Institute in Social Research Methods (SISRM)
 <br><br><h4>Alumni</h4>
-Hannah Chen (Spring '25)
+Alex Arnell (Summer '25 - Spring '26)
+<br>Hannah Chen (Spring '25)
+<br>Nick Emerton (Winter '26 - Spring '26)
+<br>Griggs Fuller (Spring '25 - Winter '26)
 <br>Nathalie Lam (Summer '25)
 <br>Ella Montgomery (Summer '25)
 <br>Elena Osse (Summer '25 - Fall '25)
