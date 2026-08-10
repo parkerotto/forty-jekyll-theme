@@ -39,13 +39,14 @@ nav-menu: true
 <p>The Chicago Urban Heritage Project would not be possible without the efforts of its outstanding student research assistants.
 <br><h4>Active Cohort (Summer 2026)</h4>
 <b>Assistant Project Manager:</b> Sophia Liu
-<br><b>Student Researchers:</b> Yixin Chen, Ana Estupinan, Sergio Marquez, Sebastian Altomare, Kuzey Tutkan, Ezra Ellenbogen, Thomas Sang, Gabe Pellebon, Juliana Dick.
+<br><b>Student Researchers:</b> Yixin Chen, Sergio Marquez, Sebastian Altomare, Ezra Ellenbogen, Thomas Sang, Juliana Dick.
 <br><br><h4>Partners</h4>
 Dr. Emily Talen's Urbanism Lab
 <br>Dr. Emily Talen's Historical Preservation Class
 <br>Summer Institute in Social Research Methods (SISRM)
 <br><br><h4>Alumni</h4>
 Alex Arnell (Summer '25 - Spring '26)
+<br>Ana Estupinan (Spring '25 - Spring '26)
 <br>Hannah Chen (Spring '25)
 <br>Nick Emerton (Winter '26 - Spring '26)
 <br>Griggs Fuller (Spring '25 - Winter '26)
